@@ -1,19 +1,15 @@
 <template>
-  <div id="app">
-    <Navbar />
-    <router-view></router-view>
-  </div>
+  <li>
+    <router-link :to="to">{{name.toUpperCase()}}</router-link>    
+  </li>
 </template>
 
 <script>
 
-import Navbar from './components/Navbar/Navbar.vue';
 
 export default {
-  name: "App",
-  components: {
-    Navbar
-  }
+  name: "NavLink",
+  props: ['name', 'id', 'to'],
 };
 </script>
 
