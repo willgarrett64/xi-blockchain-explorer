@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Navbar />
+    <SearchArea />
     <main>
       <router-view></router-view>
     </main>
@@ -8,13 +9,14 @@
 </template>
 
 <script>
-
 import Navbar from './components/Navbar/Navbar.vue';
+import SearchArea from './components/Search/SearchArea.vue';
 
 export default {
   name: "App",
   components: {
-    Navbar
+    Navbar,
+    SearchArea
   }
 };
 </script>
