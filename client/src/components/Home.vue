@@ -1,20 +1,24 @@
 <template>
   <div>
-    <h1>This is the HOME page</h1>
-    <Table 
-      v-if="this.dataLoaded"
-      :headers="['height', 'hash', 'miner', 'timestamp']" 
-      :tableData="blocksTableData"
-    />
-    <Table 
-      v-if="this.dataLoaded"
-      :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactionsTableData"
-    />
+    <h2>Overview</h2>
+    <div class="recent-tables">
+      <TableWrapper
+        v-if="this.dataLoaded"
+        :headers="['height', 'hash', 'miner', 'timestamp']"
+        :tableData="blocksTableData"
+        :tableHeader="'Recent Blocks'"
+      />
+      <TableWrapper
+        v-if="this.dataLoaded"
+        :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactionsTableData"
+        :tableHeader="'Recent Transactions'"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import Table from './Table/Table.vue';
+import TableWrapper from './Table/TableWrapper.vue';
 import {convertToTableData} from '../utils/cleanTableData.js';
 
 export default {
@@ -55,11 +59,14 @@ export default {
     }
   },
   components: {
-    Table,
+    TableWrapper,
   }
 }
 </script>
 
 <style>
-
+.recent-tables {
+  display: flex;
+  flex-direction: column;
+}
 </style>

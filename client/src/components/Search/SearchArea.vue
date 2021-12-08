@@ -1,5 +1,6 @@
 <template>
   <div class="search-area">
+    <h1>XI Blockchain Explorer</h1>
     <SearchBarWrapper />
   </div>
 </template>
@@ -23,5 +24,9 @@ export default {
   position: relative;
   height: 10vh;
   background-color: var(--xi-orange);
+}
+
+.search-area h1 {
+  font-size: 1.5rem;
 }
 </style>

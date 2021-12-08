@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="horizontal-table">
     <thead>
       <tr>
         <th 
@@ -39,5 +39,34 @@ export default {
 </script>
 
 <style>
+.horizontal-table {
+  display: block;
+  width: 100%;
+  overflow: scroll;
+  border-collapse: collapse;
+}
 
+th, tr, td {
+  padding: 15px;
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+td a {
+  color: black;
+}
+
+td a:hover {
+  color: var(--xi-dark-orange);
+}
+
+th {
+  background-color: var(--xi-blue);
+  color: white;
+}
+
+tr:hover {
+  background-color: rgb(218, 218, 218);
+}
 </style>

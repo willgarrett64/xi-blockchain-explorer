@@ -11,15 +11,16 @@
       <tr><th>Total Transactions</th><td>{{ block.numTransactions.data }}</td></tr>
     </table>
 
-    <Table 
+    <TableWrapper
       :tableData="block.transactions.data"
       :headers="['hash', 'from', 'to', 'amount', 'timestamp']"
+      :tableHeader="'Block Transactions'"
     />
   </div>
 </template>
 
 <script>
-import Table from "../Table/Table.vue";
+import TableWrapper from "../Table/TableWrapper.vue";
 import {convertToTableData} from '../../utils/cleanTableData.js';
 
 export default {
@@ -56,7 +57,7 @@ export default {
     },
   },
   components: {
-    Table
+    TableWrapper
   }
 }
 </script>
