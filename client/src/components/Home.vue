@@ -69,4 +69,10 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
+@media only screen and (min-width: 750px) {
+  .recent-tables {
+    flex-direction: row;
+  }
+}
 </style>

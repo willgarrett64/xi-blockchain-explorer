@@ -47,6 +47,7 @@ export default {
 }
 
 th, tr, td {
+  font-size: 0.8rem;
   padding: 15px;
   max-width: 100px;
   text-overflow: ellipsis;
