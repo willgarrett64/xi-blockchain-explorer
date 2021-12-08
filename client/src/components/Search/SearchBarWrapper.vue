@@ -23,6 +23,7 @@ export default {
 
 <style>
 .search-bar-wrapper {
+  background-color: var(--xi-blue);
   position: absolute;
   display: flex;
   height: 4vh;
@@ -30,8 +31,9 @@ export default {
   max-width: 600px;
   bottom: 0;
   left: 50%;
+  padding: 0;
   transform: translate(-50%, 50%);
-  border: solid 3px red;
+  border: solid 3px var(--xi-blue);
   border-radius: 10px;
   overflow: hidden;
 }

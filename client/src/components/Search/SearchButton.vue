@@ -24,7 +24,13 @@ export default {
 .search-button {
   height: 4vh;
   width: 4vh;
-  background-color: lightseagreen;
+  background-color: var(--xi-blue);
+  color: white; /*TEMPORARY*/
   border: none;
+}
+
+.search-button:hover {
+  cursor: pointer;
+  background-color: var(--xi-light-blue);
 }
 </style>

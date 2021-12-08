@@ -28,6 +28,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --xi-blue: rgb(37, 67, 119);
+  --xi-light-blue: rgb(63, 99, 161);
+  --xi-very-light-blue: rgb(128, 156, 204);
 }
 </style>
