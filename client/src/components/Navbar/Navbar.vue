@@ -1,17 +1,28 @@
 <template>
   <nav class="navbar">
     <router-link to="/">
-      <img :src="require(`@/assets/images/xi-logo.jpg`)" alt="xi logo" class="logo-img"/>
-    </router-link>
-    <img :src="require(`@/assets/images/menu-icon.svg`)" alt="menu button" class="menu-icon"/>
-    <ul class="nav-links open">
-      <NavLink 
-        v-for="link in links"
-        :key="link.id"
-        :name="link.name"
-        :to="link.to"
+      <img 
+        :src="require(`@/assets/images/xi-logo.jpg`)" 
+        alt="xi logo" 
+        class="logo-img"
       />
-    </ul>
+    </router-link>
+    <img 
+      v-on:click="toggleBurgerMenu"
+      :src="require(`@/assets/images/menu-icon.svg`)" 
+      alt="menu button" 
+      class="menu-icon"
+    />
+    <div class="nav-links">
+      <ul>
+        <NavLink
+          v-for="link in links"
+          :key="link.id"
+          :name="link.name"
+          :to="link.to"
+        />
+      </ul>
+    </div>
   </nav>
 </template>
 
@@ -46,12 +57,18 @@ export default {
   }},
   components: {
     NavLink
+  },
+  methods: {
+    toggleBurgerMenu() {
+      document.querySelector('.nav-links').classList.toggle('open')
+    }
   }
 };
 </script>
 
 <style>
 .navbar {
+  position: relative;
   background-color: var(--xi-blue);
   color: white;
   display: flex;
@@ -71,13 +88,36 @@ export default {
   width: 4vh;
 }
 
+.menu-icon:hover {
+  cursor: pointer;
+}
+
 .nav-links {
+  position: fixed;
+  z-index: 100;
+  top: 8vh;
+  right: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  width: 50%;
-  height: 100%;
+  width: 0vw;
+  height: 0;
+  transition: 0.8s;
+  overflow: hidden;
+  background-color: var(--xi-blue);
+}
+
+.nav-links.open {
+  width: 100vw;
+  height: 92vh;
+}
+
+.nav-links ul {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 92vh;
+  width: 100vw;
   list-style: none;
 }
 
