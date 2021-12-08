@@ -2,17 +2,17 @@
   <div>
     <p>This is BLOCK {{ $route.params.height }} page</p>
     <table>
-      <tr><th>Timestamp</th><td>{{ block.timestamp }}</td></tr>
-      <tr><th>Height</th><td>{{ block.height }}</td></tr>
-      <tr><th>Block Hash</th><td>{{ block.hash }}</td></tr>
-      <tr><th>Parent Hash</th><td>{{ block.parentHash }}</td></tr>
-      <tr><th>Ledger Hash</th><td>{{ block.ledgerHash }}</td></tr>
-      <tr><th>Miner</th><td>{{ block.miner }}</td></tr>
-      <tr><th>Total Transactions</th><td>{{ block.transactions.length }}</td></tr>
+      <tr><th>Timestamp</th><td>{{ block.timestamp.data }}</td></tr>
+      <tr><th>Height</th><td>{{ block.height.data }}</td></tr>
+      <tr><th>Block Hash</th><td>{{ block.hash.data }}</td></tr>
+      <tr><th>Parent Hash</th><td>{{ block.parentHash.data }}</td></tr>
+      <tr><th>Ledger Hash</th><td>{{ block.ledgerHash.data }}</td></tr>
+      <tr><th>Miner</th><td>{{ block.miner.data }}</td></tr>
+      <tr><th>Total Transactions</th><td>{{ block.numTransactions.data }}</td></tr>
     </table>
 
     <Table 
-      :tableData="block.transactions"
+      :tableData="block.transactions.data"
       :headers="['hash', 'from', 'to', 'amount', 'timestamp']"
     />
   </div>
@@ -20,24 +20,23 @@
 
 <script>
 import Table from "../Table/Table.vue";
+import {convertToTableData} from '../../utils/cleanTableData.js';
 
 export default {
   name: "BlockPage",
   data() {
     return {
-      block: {}
+      block: {},
     }
   },
-  computed: {
-    
-  },
   created() {
-    this.getData();
+    this.getData(); //fetch the block data on creating component
   },
   watch: {
+    // update block data if the route changes
     $route(to, from) {
       if (to !== from) {
-        this.block = this.getData();
+        this.getData();
       }
     }
   },
@@ -45,7 +44,12 @@ export default {
     async getData() {
       try {
         let response = await fetch(`https://xi.test.network/blocks/${this.$route.params.height}`);
-        this.block = await response.json();
+        const block = await response.json();
+        
+        // need a way of adding the "block" property to the transactions
+        block.transactions = block.transactions.map(transaction => convertToTableData(transaction, 'transaction'))
+
+        this.block = convertToTableData(block, 'block');
       } catch (error) {
         console.log(error);
       }

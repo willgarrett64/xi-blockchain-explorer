@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import App from "./App.vue";
 import Home from "./components/Home.vue";
 import BlockPage from "./components/BlockPage/BlockPage.vue";
+import TransactionPage from "./components/TransactionPage/TransactionPage.vue";
 
 
 //set up VueRouter
@@ -11,6 +12,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/', component: Home},
   { path: '/blocks/:height', component: BlockPage },
+  { path: '/blocks/:height/transactions/:hash', component: TransactionPage },
 ]
 
 const router = new VueRouter({

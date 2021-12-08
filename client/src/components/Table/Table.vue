@@ -2,14 +2,18 @@
   <table>
     <thead>
       <tr>
-        <th v-for="header in headers"
-        :key="header">{{header}}</th>
+        <th 
+          v-for="header in headers"
+          :key="header"
+        >
+          {{header}}
+        </th>
       </tr>
     </thead>
     <tbody>
       <TableRow 
         v-for="item in tableData"
-        :key="item.hash"
+        :key="item.hash.data"
         :item="item"
         :headers="headers"
       />

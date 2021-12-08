@@ -1,13 +1,17 @@
 <template>
   <tr >
-    <td v-for="header in headers"
-    :key="header">
-      {{ item[header] }}
-    </td>
+    <TableData 
+      v-for="header in headers"
+      :key="header"
+      :data="item[header].data"
+      :to="item[header].to"
+    />
   </tr>
 </template>
 
 <script>
+import TableData from "./TableData.vue"
+
 export default {
   name: "TableRow",
   props: ['headers', 'item'],
@@ -16,6 +20,9 @@ export default {
       
     }
   },
+  components: {
+    TableData
+  }
 }
 </script>
 
