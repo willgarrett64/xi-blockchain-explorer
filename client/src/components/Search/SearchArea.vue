@@ -22,8 +22,6 @@ export default {
 .search-area {
   position: relative;
   height: 10vh;
-  background-color: aquamarine;
+  background-color: var(--xi-orange);
 }
-
-
 </style>

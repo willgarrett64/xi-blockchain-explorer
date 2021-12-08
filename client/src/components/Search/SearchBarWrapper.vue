@@ -1,11 +1,13 @@
 <template>
   <div class="search-bar-wrapper">
+    <SearchFilter />
     <SearchBar />
     <SearchButton />
   </div>
 </template>
 
 <script>
+import SearchFilter from "./SearchFilter.vue";
 import SearchBar from "./SearchBar.vue";
 import SearchButton from "./SearchButton.vue";
 
@@ -15,6 +17,7 @@ export default {
     
   }},
   components: {
+    SearchFilter,
     SearchBar,
     SearchButton,
   }

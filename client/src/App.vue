@@ -40,5 +40,12 @@ export default {
   --xi-blue: rgb(37, 67, 119);
   --xi-light-blue: rgb(63, 99, 161);
   --xi-very-light-blue: rgb(128, 156, 204);
+  --xi-dark-orange: rgb(255, 115, 0);
+  --xi-orange: rgb(255, 153, 0);
+  --xi-light-orange: rgb(255, 191, 14);
+}
+
+main {
+  padding-top: 4vh;
 }
 </style>

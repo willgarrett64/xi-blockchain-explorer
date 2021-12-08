@@ -2,7 +2,7 @@
   <button
     class="search-button"
   >
-    Q
+    <img :src="require(`@/assets/images/search-icon.svg`)"  alt="search icon" class="search-icon" />
   </button>
 </template>
 
@@ -32,5 +32,9 @@ export default {
 .search-button:hover {
   cursor: pointer;
   background-color: var(--xi-light-blue);
+}
+
+.search-icon {
+  height: 60%;
 }
 </style>

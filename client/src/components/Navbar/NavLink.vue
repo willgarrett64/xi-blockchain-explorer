@@ -44,12 +44,16 @@ export default {
 }
 
 .nav-link:hover a {
-  color: lightgrey;
+  color: var(--xi-orange);
   text-decoration: none;
 }
 
 .nav-link .router-link-exact-active {
-  background-color: orange;
+  background-color: var(--xi-orange);
+}
+
+.nav-link .router-link-exact-active:hover {
+  color: var(--xi-blue);
 }
 
 </style>
