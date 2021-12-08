@@ -3,11 +3,7 @@
     <p>This is TRANSACTION {{ $route.params.hash }} page</p>
     <table>
       <tr><th>Timestamp</th><td>{{ transaction.timestamp.data }}</td></tr>
-      <!-- 
-        <tr><th>Block</th><td>{{ transaction.block.data }}</td></tr> 
-        currrently not working as I need a way to extract the block data
-        this will need the full list of blocks and their transactions passed down to this component
-      -->
+      <tr><th>Block</th><td>{{ transaction.block.data }}</td></tr> 
       <tr><th>Hash</th><td>{{ transaction.hash.data }}</td></tr>
       <tr><th>From</th><td>{{ transaction.from.data }}</td></tr>
       <tr><th>To</th><td>{{ transaction.to.data }}</td></tr>

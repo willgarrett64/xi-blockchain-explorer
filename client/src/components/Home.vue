@@ -15,7 +15,7 @@
 
 <script>
 import Table from './Table/Table.vue';
-import {convertToTableData, addBlockToTransaction} from '../utils/cleanTableData.js';
+import {convertToTableData} from '../utils/cleanTableData.js';
 
 export default {
   name: 'home',
@@ -35,10 +35,6 @@ export default {
     let blocks = await this.getData('blocks');
     let transactions = await this.getData('transactions');
     
-    transactions.forEach(element => {
-      element.block = addBlockToTransaction(element, blocks)
-    });
-
     this.blocksRawData = blocks;
     this.transactionsRawData = transactions;
 

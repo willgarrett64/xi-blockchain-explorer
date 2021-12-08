@@ -2,10 +2,10 @@
 
 // }
 
-// find and add "block" property to transactions object
-const addBlockToTransaction = (transaction, allBlocks) => {
-  let block = allBlocks.find(block => block.transactions.some(el => el.hash === transaction.hash));
-  return block.height;
+// add "block" property to transactions objects containing the transactions block height
+// IMPORTANT: the memo property is always in same format and contains the block height, however this isn't an ideal solution
+const addBlockToTransaction = (transaction) => {
+  return transaction.memo.split(' ')[1].substring(1);
 }
 
 
@@ -36,12 +36,25 @@ const addLink = (data, key, type) => {
 }
 
 
-// 
+// parse raw data from api into a format that is readable by the Table component. This requires converting properties to objects that contain a "data" property (with the value) and a "to" property (with the link route if required)
+/* E.g. 
+  {a: 1, b: 2, c: 3} 
+  =>
+  {
+    a: {data: 1, to:"/route..."}, 
+    b: {data: 2, to:"/route..."}, 
+    c: {data: 3, to: null}
+  }
+ */
 const convertToTableData = (data, type) => {
   let tableData = {}
 
-  // reformat data to add a "to" property
-  // this is so that the Table component knows where to add links
+  // extract the block number for each transaction and add as property
+  if (type === 'transaction') {
+    data.block = addBlockToTransaction(data);
+  }  
+
+  // parse original data and add a "to" property
   for (const key in data) {
     tableData[key] = {
       data: data[key],
@@ -49,8 +62,8 @@ const convertToTableData = (data, type) => {
     }
   }
 
+  // for blocks, add total number of transations as property
   if (type === 'block') {
-    // add total number of transations
     tableData.numTransactions = {data: data.transactions.length};
   }  
 
@@ -60,5 +73,4 @@ const convertToTableData = (data, type) => {
 
 module.exports = {
   convertToTableData,
-  addBlockToTransaction
 }
