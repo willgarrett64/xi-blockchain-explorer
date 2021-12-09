@@ -7,11 +7,13 @@
         :headers="['height', 'hash', 'miner', 'timestamp']"
         :tableData="blocksTableData"
         :tableHeader="'Recent Blocks'"
+        :type="'horizontal'"
       />
       <TableWrapper
         v-if="this.dataLoaded"
         :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactionsTableData"
         :tableHeader="'Recent Transactions'"
+        :type="'horizontal'"
       />
     </div>
   </div>

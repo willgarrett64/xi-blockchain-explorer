@@ -1,24 +1,21 @@
 <template>
   <div>
-    <p>This is TRANSACTION {{ $route.params.hash }} page</p>
-    <table>
-      <tr><th>Timestamp</th><td>{{ transaction.timestamp.data }}</td></tr>
-      <tr><th>Block</th><td>{{ transaction.block.data }}</td></tr> 
-      <tr><th>Hash</th><td>{{ transaction.hash.data }}</td></tr>
-      <tr><th>From</th><td>{{ transaction.from.data }}</td></tr>
-      <tr><th>To</th><td>{{ transaction.to.data }}</td></tr>
-      <tr><th>Amount</th><td>{{ transaction.amount.data }}</td></tr>
-      <tr><th>Fee</th><td>{{ transaction.fee.data }}</td></tr>
-      <tr><th>Memo</th><td>{{ transaction.memo.data }}</td></tr>
-    </table>
+    <h2>This is TRANSACTION {{ $route.params.hash }} page</h2>
+    <TableWrapper 
+      :tableData="transaction"
+      :headers="['timestamp', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
+      :tableHeader="'Transaction Overview'"
+      :type="'vertical'"
+    />
   </div>
 </template>
 
 <script>
+import TableWrapper from '../Table/TableWrapper.vue';
 import {convertToTableData} from '../../utils/cleanTableData.js';
 
 export default {
-  name: "TransactionPage",
+  name: "TransactionOverviewPage",
   data() {
     return {
       transaction: {},
@@ -48,6 +45,7 @@ export default {
     },
   },
   components: {
+    TableWrapper
   }
 }
 </script>

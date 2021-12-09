@@ -1,4 +1,4 @@
-// const unixToMinsAgo = (unix) => {
+  // const unixToMinsAgo = (unix) => {
 
 // }
 
@@ -66,6 +66,9 @@ const convertToTableData = (data, type) => {
   if (type === 'block') {
     tableData.numTransactions = {data: data.transactions.length};
   }  
+
+  // both blocks and transactions have a unique "hash" which can be used as a key, however wallets have a unique "address"
+  tableData.key = data.hash ? data.hash : data.address
 
   return tableData;
 }

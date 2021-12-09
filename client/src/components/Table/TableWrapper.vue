@@ -4,6 +4,7 @@
     <Table 
       :headers="headers"
       :tableData="tableData"
+      :type="type"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@ import Table from './Table.vue';
 
 export default {
   name: "TableWrapper",
-  props: ['tableHeader', 'headers', 'tableData'],
+  props: ['tableHeader', 'headers', 'tableData', 'type'],
   data() {
     return {
       
@@ -29,5 +30,9 @@ export default {
 .table-wrapper {
   width: 100%;
   overflow: hidden;
+}
+
+table {
+  border-collapse: collapse;
 }
 </style>

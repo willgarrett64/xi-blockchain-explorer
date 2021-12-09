@@ -1,20 +1,18 @@
 <template>
   <div>
-    <p>This is BLOCK {{ $route.params.height }} page</p>
-    <table>
-      <tr><th>Timestamp</th><td>{{ block.timestamp.data }}</td></tr>
-      <tr><th>Height</th><td>{{ block.height.data }}</td></tr>
-      <tr><th>Block Hash</th><td>{{ block.hash.data }}</td></tr>
-      <tr><th>Parent Hash</th><td>{{ block.parentHash.data }}</td></tr>
-      <tr><th>Ledger Hash</th><td>{{ block.ledgerHash.data }}</td></tr>
-      <tr><th>Miner</th><td>{{ block.miner.data }}</td></tr>
-      <tr><th>Total Transactions</th><td>{{ block.numTransactions.data }}</td></tr>
-    </table>
-
+    <h2>This is BLOCK {{ $route.params.height }} page</h2>
+    <TableWrapper 
+      :tableData="block"
+      :headers="['timestamp', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'numTransactions']"
+      :tableHeader="'Block Overview'"
+      :type="'vertical'"
+    />
+    
     <TableWrapper
       :tableData="block.transactions.data"
       :headers="['hash', 'from', 'to', 'amount', 'timestamp']"
       :tableHeader="'Block Transactions'"
+      :type="'horizontal'"
     />
   </div>
 </template>
@@ -24,7 +22,7 @@ import TableWrapper from "../Table/TableWrapper.vue";
 import {convertToTableData} from '../../utils/cleanTableData.js';
 
 export default {
-  name: "BlockPage",
+  name: "BlockOverviewPage",
   data() {
     return {
       block: {},
@@ -57,7 +55,7 @@ export default {
     },
   },
   components: {
-    TableWrapper
+    TableWrapper,
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <table class="horizontal-table">
+  <!--Horizontal tables are for arrays of data - top row is made of headers and then data object in array will form subsequent rows-->
+  <table v-if="type === 'horizontal'" class="horizontal-table">
     <thead>
       <tr>
         <th 
@@ -13,9 +14,22 @@
     <tbody>
       <TableRow 
         v-for="item in tableData"
-        :key="item.hash.data"
+        :key="item.key"
         :item="item"
         :headers="headers"
+      />
+    </tbody>
+  </table>
+
+  <!--Vertical tables are for single data object - each row consists of a header (to left) and data (to right)-->
+  <table v-else-if="type === 'vertical'" class="vertical-table">
+    <tbody>
+      <TableRowVertical
+        v-for="header in headers"
+        :key="header"
+        :data="tableData[header].data"
+        :to="tableData[header].to"
+        :header="header"
       />
     </tbody>
   </table>
@@ -23,17 +37,19 @@
 
 <script>
 import TableRow from './TableRow.vue';
+import TableRowVertical from './TableRowVertical.vue';
 
 export default {
   name: "Table",
-  props: ['headers', 'tableData'],
+  props: ['headers', 'tableData', 'type'],
   data() {
     return {
       
     }
   },
   components: {
-    TableRow
+    TableRow,
+    TableRowVertical
   }
 }
 </script>
