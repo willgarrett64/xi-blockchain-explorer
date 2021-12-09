@@ -1,15 +1,20 @@
 const express = require('express');
 const {fetchXi} = require('../utils/fetchXiData');
+const {cleanData, cleanListOfData} = require('../utils/cleanData');
 
 const blocksRouter = express.Router();
 
 // get 1st page of blocks (10 most recent)
 blocksRouter.get('/', async (req, res) => {
-  const data = await fetchXi('/blocks');
-  if (data.error) {
-    res.status(400).send(data.error)
+  const blocksRaw = await fetchXi('/blocks');
+  if (blocksRaw.error) {
+    res.status(400).send(blocksRaw.error)
   } 
-  res.send(data)
+
+  // clean data so readable by by Table componenet in Vue app
+  const blocksClean = cleanListOfData(blocksRaw);
+
+  res.send(blocksClean)
 })
 
 
@@ -30,9 +35,12 @@ blocksRouter.get('/page/:num', async (req, res) => {
   for (let i = startingBlock; i > startingBlock - 10 && i > 0; i--) {
     promises.push(fetchXi('/blocks/' + i));
   }
-  const blockList = await Promise.all(promises)
+  const blocksRaw = await Promise.all(promises)
   
-  res.status(200).send(blockList)
+  // clean data so readable by by Table componenet in Vue app
+  const blocksClean = cleanListOfData(blocksRaw);
+
+  res.send(blocksClean)
 })
 
 
@@ -40,25 +48,23 @@ blocksRouter.get('/page/:num', async (req, res) => {
 blocksRouter.get('/:height', async (req, res) => {
   const height = req.params.height;
   
-  const data = await fetchXi('/blocks/' + height);
-  if (data.error) {
-    res.status(400).send(data)
+  const blockRaw = await fetchXi('/blocks/' + height);
+  if (blockRaw.error) {
+    res.status(400).send(blockRaw)
   } 
 
-  res.send(data)
-})
+  // add block height to each transaction
+  const transactionsRaw = blockRaw.transactions.map(tx => {
+    return {...tx, block: blockRaw.height};
+  })
 
-// get single block by height
-blocksRouter.get('/:height', async (req, res) => {
-  const height = req.params.height;
-  
-  const data = await fetchXi('/blocks/' + height);
-  if (data.error) {
-    res.status(400).send(data)
-  } 
-  res.send(data)
-})
+  // clean data so readable by by Table componenet in Vue app
+  const blockClean = cleanData(blockRaw);
+  const transactionsClean = cleanListOfData(transactionsRaw);
+  blockClean.transactions = transactionsClean;
 
+  res.send(blockClean)
+})
 
 
 module.exports = blocksRouter;

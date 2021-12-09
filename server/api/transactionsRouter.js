@@ -1,5 +1,6 @@
 const express = require('express');
 const {fetchXi, getTxBlock} = require('../utils/fetchXiData');
+const {cleanData, cleanListOfData} = require('../utils/cleanData')
 
 const transactionsRouter = express.Router();
 
@@ -8,18 +9,21 @@ transactionsRouter.get('/', async (req, res) => {
 
   //FIX: need to figure out how to count total number of transactions to work out total number of pages!
 
-  const transactions = await fetchXi('/transactions');
-  if (transactions.error) {
-    res.status(400).send(transactions.error)
+  const transactionsRaw = await fetchXi('/transactions');
+  if (transactionsRaw.error) {
+    res.status(400).send(transactionsRaw.error)
   } 
 
   // add the block associated with each transaction
-  const txs = await Promise.all(transactions.map(async tx => {
+  const transactionsWithBlock = await Promise.all(transactionsRaw.map(async tx => {
     const height = await getTxBlock(tx.hash, req.latestBlock);
     return {...tx, block: height}
   }))
 
-  res.send(txs);
+  // clean data so readable by by Table componenet in Vue app
+  const transactionsClean = cleanListOfData(transactionsWithBlock);
+
+  res.send(transactionsClean);
 })
 
 
@@ -47,12 +51,15 @@ transactionsRouter.get('/page/:num', async (req, res) => {
   }
 
   // add the block associated with each transaction
-  const txs = await Promise.all(transactions.map(async tx => {
+  const transactionsWithBlock = await Promise.all(transactions.map(async tx => {
     const height = await getTxBlock(tx.hash, req.latestBlock);
     return {...tx, block: height}
   }))
   
-  res.status(200).send(txs)
+  // clean data so readable by by Table componenet in Vue app
+  const transactionsClean = cleanListOfData(transactionsWithBlock);
+
+  res.send(transactionsClean)
 })
 
 
@@ -64,10 +71,10 @@ transactionsRouter.get('/:hash', async (req, res) => {
   // Since the xi api only allows you to request a single transaction if you also know the block height ('/blocks/:height/transactions/:hash'), there is no simple way to get a transaction from the hash alone. There is also no list of all transactions to search through. 
   //Solution: iterate through each block and search through the list of the block's transactions until a matching hash is found.
   // The search begins from the more recent block for performance purposes - the assumption being that it's more likely the user is searching something recent 
-  let transaction = null;
+  let transactionRaw = null;
   while (!transaction && latestBlock > 0) {
     const block = await fetchXi('/blocks/' + latestBlock);
-    transaction = block.transactions.find(tx => txHash === tx.hash)
+    transactionRaw = block.transactions.find(tx => txHash === tx.hash)
     latestBlock--;
   }
 
@@ -75,9 +82,12 @@ transactionsRouter.get('/:hash', async (req, res) => {
     res.status(400).send('transaction not found')
   }
 
-  transaction.block = latestBlock;
+  transactionRaw.block = latestBlock;
 
-  res.send(transaction)
+  // clean data so readable by by Table componenet in Vue app
+  const transactionClean = cleanData(transactionRaw);
+
+  res.send(transactionClean)
 })
 
 

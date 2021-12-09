@@ -1,5 +1,6 @@
 const express = require('express');
 const {fetchXi, getWalletTxs} = require('../utils/fetchXiData');
+const {cleanData, cleanListOfData} = require('../utils/cleanData')
 
 const walletsRouter = express.Router();
 
@@ -8,11 +9,15 @@ walletsRouter.get('/', async (req, res) => {
 
   //FIX: need to figure out how to count total number of transactions to work out total number of pages!
 
-  const data = await fetchXi('/wallets');
-  if (data.error) {
-    res.status(400).send(data.error)
+  const walletsRaw = await fetchXi('/wallets');
+  if (walletsRaw.error) {
+    res.status(400).send(walletsRaw.error)
   } 
-  res.send(data.slice(0, 10));
+
+  // clean data so readable by by Table componenet in Vue app, and limit to 10
+  const walletsClean = cleanListOfData(walletsRaw.slice(0, 10));
+
+  res.send(walletsClean);
 })
 
 
@@ -23,11 +28,15 @@ walletsRouter.get('/page/:num', async (req, res) => {
 
   //FIX: need to figure out how to count total number of wallets to work out total number of pages!
 
-  const data = await fetchXi('/wallets');
-  if (data.error) {
-    res.status(400).send(data.error)
+  const walletsRaw = await fetchXi('/wallets');
+  if (walletsRaw.error) {
+    res.status(400).send(walletsRaw.error)
   } 
-  res.send(data.slice(startingWallet, startingWallet + 10));
+
+  // clean data so readable by by Table componenet in Vue app, and limit to 10
+  const walletsClean = cleanListOfData(walletsRaw.slice(startingWallet, startingWallet + 10));
+
+  res.send(walletsClean);
 })
 
 
@@ -36,24 +45,30 @@ walletsRouter.get('/:address', async (req, res) => {
   const walletAddress = req.params.address;
   let latestBlock = req.latestBlock;
 
-  const wallet = await fetchXi('/wallets/' + walletAddress);
-  const transactions = await getWalletTxs(walletAddress, latestBlock);
+  const walletRaw = await fetchXi('/wallets/' + walletAddress);
+  const transactionsRaw = await getWalletTxs(walletAddress, latestBlock);
 
-  wallet.transactions = transactions;
+  // clean data so readable by by Table componenet in Vue app
+  const walletClean = cleanData(walletRaw);
+  const transactionsClean = cleanListOfData(transactionsRaw)
+  walletClean.transactions = transactionsClean;
   
-  res.send(wallet)
+  res.send(walletClean)
 })
 
 walletsRouter.get('/:address/page/:num', async (req, res) => {
   const walletAddress = req.params.address;
   let latestBlock = req.latestBlock;
 
-  const wallet = await fetchXi('/wallets/' + walletAddress);
-  const transactions = await getWalletTxs(walletAddress, latestBlock, req.params.num);
+  const walletRaw = await fetchXi('/wallets/' + walletAddress);
+  const transactionsRaw = await getWalletTxs(walletAddress, latestBlock, req.params.num);
 
-  wallet.transactions = transactions;
+  // clean data so readable by by Table componenet in Vue app
+  const walletClean = cleanData(walletRaw);
+  const transactionsClean = cleanListOfData(transactionsRaw)
+  walletClean.transactions = transactionsClean;
   
-  res.send(wallet)
+  res.send(walletClean);
 })
 
 
