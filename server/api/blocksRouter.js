@@ -1,11 +1,10 @@
 const express = require('express');
 const {fetchXi} = require('../utils/fetchXiData');
-const {getLatestBlock} = require('../utils/customMiddleware');
 
 const blocksRouter = express.Router();
 
-// get 1st page of blocks (10 most recent blocks)
-blocksRouter.get('/', getLatestBlock, async (req, res) => {
+// get 1st page of blocks (10 most recent)
+blocksRouter.get('/', async (req, res) => {
   const data = await fetchXi('/blocks');
   if (data.error) {
     res.status(400).send(data.error)
@@ -15,9 +14,9 @@ blocksRouter.get('/', getLatestBlock, async (req, res) => {
 
 
 // return list of 10 blocks for subsequent pages (after the intial 10 most recent)
-blocksRouter.get('/page/:num', getLatestBlock, async (req, res) => {
+blocksRouter.get('/page/:num', async (req, res) => {
   const pageNo = req.params.num;
-  if (pageNo > req.numberOfPages) {
+  if (pageNo > req.numberOfBlockPages) {
     res.status(400).send("page not found")
   }
 
@@ -36,6 +35,18 @@ blocksRouter.get('/page/:num', getLatestBlock, async (req, res) => {
   res.status(200).send(blockList)
 })
 
+
+// get single block by height
+blocksRouter.get('/:height', async (req, res) => {
+  const height = req.params.height;
+  
+  const data = await fetchXi('/blocks/' + height);
+  if (data.error) {
+    res.status(400).send(data)
+  } 
+
+  res.send(data)
+})
 
 // get single block by height
 blocksRouter.get('/:height', async (req, res) => {

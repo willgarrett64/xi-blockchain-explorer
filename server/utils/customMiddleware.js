@@ -7,7 +7,7 @@ const getLatestBlock = async (req, res, next) => {
       res.status(400).send(response.error);
     } 
     req.latestBlock = response.height;
-    req.numberOfPages = Math.floor((response.height / 10) + 1) 
+    req.numberOfBlockPages = Math.floor((response.height / 10) + 1) 
     next();
     } catch (error) {
       console.error();

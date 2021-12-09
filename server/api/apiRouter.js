@@ -8,7 +8,7 @@ apiRouter.use('/blocks', blocksRouter);
 const transactionsRouter = require('./transactionsRouter.js');
 apiRouter.use('/transactions', transactionsRouter);
 
-// const walletsRouter = require('./walletsRouter.js');
-// apiRouter.use('/wallets', walletsRouter);
+const walletsRouter = require('./walletsRouter.js');
+apiRouter.use('/wallets', walletsRouter);
 
 module.exports = apiRouter;

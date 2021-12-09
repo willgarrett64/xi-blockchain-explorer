@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
+const {getLatestBlock} = require('./utils/customMiddleware')
 const app = express();  
 
 app.use(cors());
@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 //Mount the api router at the '/api' path
 const apiRouter = require('./api/apiRouter');
-app.use('/api', apiRouter);
+app.use('/api', getLatestBlock, apiRouter);
 
 
 
