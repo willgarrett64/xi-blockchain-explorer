@@ -12,7 +12,7 @@
     <TableWrapper
       v-if="overviewData.transactions && dataLoaded"
       :tableData="overviewData.transactions"
-      :headers="['date', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
+      :headers="['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
       :tableHeader="title + ' Transactions'"
       :type="'horizontal'"
     />

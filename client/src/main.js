@@ -18,7 +18,7 @@ const routes = [
     component: ListAllPage,
     props: {
       title: 'All Blocks',
-      headers: ['date', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
+      headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
       endpoint: '/blocks'
     } 
   },{ 
@@ -26,7 +26,7 @@ const routes = [
     component: ListAllPage,
     props: {
       title: 'All Transactions',
-      headers: ['date', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
+      headers: ['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
       endpoint: '/transactions'
     } 
   },

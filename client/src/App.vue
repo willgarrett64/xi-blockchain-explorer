@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <Navbar />
-    <SearchArea />
+    <header>
+      <Navbar />
+      <SearchArea />
+    </header>
     <main>
       <router-view></router-view>
     </main>
@@ -36,6 +38,10 @@ export default {
   margin: 0;
 }
 
+html {
+  background-color: rgb(216, 224, 238);
+}
+
 :root {
   --xi-blue: rgb(37, 67, 119);
   --xi-light-blue: rgb(63, 99, 161);
@@ -45,8 +51,14 @@ export default {
   --xi-light-orange: rgb(255, 191, 14);
 }
 
+header {
+  position: fixed;
+  width: 100vw;
+  z-index: 20;
+}
+
 main {
   box-sizing: border-box;
-  padding: 4vh 4vw;
+  padding: 18vh 4vw;
 }
 </style>

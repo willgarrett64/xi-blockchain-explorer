@@ -55,19 +55,32 @@ export default {
 </script>
 
 <style>
-.horizontal-table {
+/*#region General table styles */
+table {
   display: block;
-  width: 100%;
-  overflow: scroll;
   border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8rem;
+  color: black;
 }
 
 th, tr, td {
-  font-size: 0.8rem;
   padding: 15px;
-  max-width: 100px;
-  text-overflow: ellipsis;
+  background-color: white;
+}
+
+tr {
+  max-width: 100%;
+}
+
+th {
+  background-color: var(--xi-blue);
+  color: white;
+}
+
+td {
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 td a {
@@ -78,12 +91,85 @@ td a:hover {
   color: var(--xi-dark-orange);
 }
 
-th {
-  background-color: var(--xi-blue);
-  color: white;
-}
+
 
 tr:hover {
   background-color: rgb(218, 218, 218);
 }
+/*#endregion General table styles */
+
+/*#region Horizontal table styles */
+.horizontal-table {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.horizontal-table td {
+  border-bottom: solid 1px var(--xi-orange);
+  max-width: 200px;
+}
+/*#endregion Horizontal table styles */
+
+
+/*#region Collapse horizontal table for mobile devices */
+@media only screen and (max-width: 760px) {
+  .horizontal-table :is(thead, tbody, tr, th, td) {
+    display: block;
+    max-width: none;
+  }
+  
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .horizontal-table :is(thead) {
+    display: none;
+  }
+
+  .horizontal-table tr { 
+    border-bottom: 1px solid var(--xi-orange); 
+    border-top: 1px solid var(--xi-orange); 
+  }
+	
+	.horizontal-table td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid var(--xi-blue); 
+		position: relative;
+    padding: 6px 0 6px 35px;
+		padding-left: 35%; 
+	}
+	
+	.horizontal-table td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 35%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+    content: attr(data-label);
+	}
+
+}  
+/*#endregion Collapse horizontal table for mobile devices */
+
+
+/*#region Vertical table styles*/
+.vertical-table {
+  width: 100%;
+}
+
+.vertical-table tbody {
+  width: 100%;
+}
+
+.vertical-table th {
+  width: 20%;
+}
+
+.vertical-table td {
+  width: 80%;
+}
+/*#endregion Vertical table styles*/
+
+
 </style>

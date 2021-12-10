@@ -5,6 +5,7 @@
       :key="header"
       :data="item[header].data"
       :to="item[header].to"
+      :header="header"
     />
   </tr>
 </template>

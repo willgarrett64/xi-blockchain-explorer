@@ -29,10 +29,5 @@ export default {
 <style>
 .table-wrapper {
   width: 100%;
-  overflow: hidden;
-}
-
-table {
-  border-collapse: collapse;
 }
 </style>
