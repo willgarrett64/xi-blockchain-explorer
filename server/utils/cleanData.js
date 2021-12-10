@@ -1,10 +1,16 @@
-//convert unix timestamp into an object with date and time in formats dd/mm/yyyy and hh:mm
+//convert unix timestamp into an object with date and time in formats dd/mm/yyyy and hh:mm, and when which is minutes since.
 const convertTimestamp = (timestamp) => {
+  // get date and time of timestamp
   const fullDate = new Date(timestamp);
   const date = fullDate.getDate() + '/' + (fullDate.getMonth() + 1) + '/' + fullDate.getFullYear();
   const time = fullDate.getHours() + ':' + fullDate.getMinutes();
 
-  return {date, time}
+  // get minutes since timestamp
+  const now = Date.now();
+  const diff = Math.ceil((now - timestamp) / (1000 * 60));
+  const when = diff + ' minute' + (diff > 1 ? 's' : '') + ' ago';
+
+  return {date, time, when}
 } 
 
 /* 
@@ -36,10 +42,12 @@ const cleanData = (rawData) => {
     }
   }
 
+  // add date, time and when (minutes since)
   if (rawData.timestamp) {
     const convertedDate = convertTimestamp(rawData.timestamp);
     tableData.date = {data: convertedDate.date};
     tableData.time = {data: convertedDate.time};
+    tableData.when = {data: convertedDate.when}
   }
   
   // both blocks and transactions have a unique "hash" which can be used as a key, however wallets have a unique "address"

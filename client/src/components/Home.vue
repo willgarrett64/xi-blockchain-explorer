@@ -4,14 +4,14 @@
     <div class="recent-tables">
       <TableWrapper
         v-if="this.loaded"
-        :headers="['height', 'hash', 'miner', 'timestamp']"
+        :headers="['height', 'hash', 'miner', 'totalTxs', 'when']"
         :tableData="blocks"
         :tableHeader="'Recent Blocks'"
         :type="'horizontal'"
       />
       <TableWrapper
         v-if="this.loaded"
-        :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactions"
+        :headers="['hash', 'from', 'to', 'amount', 'when']" :tableData="transactions"
         :tableHeader="'Recent Transactions'"
         :type="'horizontal'"
       />
@@ -46,7 +46,7 @@ export default {
     async getData(endpoint) {
       const data = await fetchData(endpoint);
       return data;
-    }
+    },
   },
   components: {
     TableWrapper,
