@@ -1,17 +1,17 @@
 <template>
   <div>
-    <h2>Overview</h2>
+    <h2>XI Overview</h2>
     <div class="recent-tables">
       <TableWrapper
         v-if="this.dataLoaded"
         :headers="['height', 'hash', 'miner', 'timestamp']"
-        :tableData="blocksTableData"
+        :tableData="blocks"
         :tableHeader="'Recent Blocks'"
         :type="'horizontal'"
       />
       <TableWrapper
         v-if="this.dataLoaded"
-        :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactionsTableData"
+        :headers="['hash', 'from', 'to', 'amount', 'timestamp']" :tableData="transactions"
         :tableHeader="'Recent Transactions'"
         :type="'horizontal'"
       />
@@ -21,43 +21,26 @@
 
 <script>
 import TableWrapper from './Table/TableWrapper.vue';
-import {convertToTableData} from '../utils/cleanTableData.js';
+import {fetchData} from '../utils/fetchData.js';
 
 export default {
   name: 'home',
   data() {
     return {
       dataLoaded: false,
-      // RawData is as it comes from the API, however it is in wrong format to be passed to the Table component 
-      blocksRawData: [],
-      transactionsRawData: [],
-      // TableData is a re-formatted form of RawData. As well as reformtting, it includes a "to" property for data where a router-link can be included
-      blocksTableData: [],
-      transactionsTableData: [],
-
+      blocks: [],
+      transactions: [],
     }
   },
   async mounted() {
-    let blocks = await this.getData('blocks');
-    let transactions = await this.getData('transactions');
-    
-    this.blocksRawData = blocks;
-    this.transactionsRawData = transactions;
-
+    this.blocks = await this.getData('/blocks');
+    this.transactions = await this.getData('/transactions');
     this.dataLoaded = true;
-
-    this.blocksTableData = blocks.map(block => convertToTableData(block, 'block'));
-    this.transactionsTableData = transactions.map(transaction => convertToTableData(transaction, 'transaction'));
   },
   methods: {
     async getData(endpoint) {
-      try {
-        let response = await fetch(`https://xi.test.network/${endpoint}`);
-        const data = await response.json();
-        return data
-      } catch (error) {
-        console.log(error);
-      }
+      const data = await fetchData(endpoint);
+      return data;
     }
   },
   components: {

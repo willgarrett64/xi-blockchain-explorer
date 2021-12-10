@@ -50,7 +50,7 @@ export default {
   components: {
     TableRow,
     TableRowVertical
-  }
+  },
 }
 </script>
 
