@@ -66,13 +66,13 @@ transactionsRouter.get('/:hash', async (req, res) => {
   //Solution: iterate through each block and search through the list of the block's transactions until a matching hash is found.
   // The search begins from the more recent block for performance purposes - the assumption being that it's more likely the user is searching something recent 
   let transactionRaw = null;
-  while (!transaction && latestBlock > 0) {
+  while (!transactionRaw && latestBlock > 0) {
     const block = await fetchXi('/blocks/' + latestBlock);
     transactionRaw = block.transactions.find(tx => txHash === tx.hash)
     latestBlock--;
   }
 
-  if (!transaction) {
+  if (!transactionRaw) {
     res.status(400).send('transaction not found')
   }
 
