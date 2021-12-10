@@ -1,5 +1,5 @@
 const express = require('express');
-const {fetchXi, getTxBlock} = require('../utils/fetchXiData');
+const {fetchXi, getTxBlock, getAllTxBlock} = require('../utils/fetchXiData');
 const {cleanData, cleanListOfData} = require('../utils/cleanData')
 
 const transactionsRouter = express.Router();
@@ -15,10 +15,7 @@ transactionsRouter.get('/', async (req, res) => {
   } 
 
   // add the block associated with each transaction
-  const transactionsWithBlock = await Promise.all(transactionsRaw.map(async tx => {
-    const height = await getTxBlock(tx.hash, req.latestBlock);
-    return {...tx, block: height}
-  }))
+  transactions = await getAllTxBlock(transactions, latestBlock);
 
   // clean data so readable by by Table componenet in Vue app
   const transactionsClean = cleanListOfData(transactionsWithBlock);
@@ -51,10 +48,7 @@ transactionsRouter.get('/page/:num', async (req, res) => {
   }
 
   // add the block associated with each transaction
-  const transactionsWithBlock = await Promise.all(transactions.map(async tx => {
-    const height = await getTxBlock(tx.hash, req.latestBlock);
-    return {...tx, block: height}
-  }))
+  transactions = await getAllTxBlock(transactions, latestBlock);
   
   // clean data so readable by by Table componenet in Vue app
   const transactionsClean = cleanListOfData(transactionsWithBlock);

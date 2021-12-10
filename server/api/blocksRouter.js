@@ -11,6 +11,12 @@ blocksRouter.get('/', async (req, res) => {
     res.status(400).send(blocksRaw.error)
   } 
 
+  // add total number of transactions
+  blocksRaw.forEach((block, index, blocksRaw) => {
+    blocksRaw[index].totalTxs = block.transactions.length;
+    delete blocksRaw[index].transactions; //remove transactions as not needed
+  });
+
   // clean data so readable by by Table componenet in Vue app
   const blocksClean = cleanListOfData(blocksRaw);
 
@@ -37,6 +43,12 @@ blocksRouter.get('/page/:num', async (req, res) => {
   }
   const blocksRaw = await Promise.all(promises)
   
+  // add total number of transactions
+  blocksRaw.forEach((block, index, blocksRaw) => {
+    blocksRaw[index].totalTxs = block.transactions.length;
+    delete blocksRaw[index].transactions; //remove transactions as not needed
+  });
+
   // clean data so readable by by Table componenet in Vue app
   const blocksClean = cleanListOfData(blocksRaw);
 
@@ -53,8 +65,12 @@ blocksRouter.get('/:height', async (req, res) => {
     res.status(400).send(blockRaw)
   } 
 
+  // add total number of transactions
+  blockRaw.totalTxs = blockRaw.transactions.length
+
+
   // add block height to each transaction
-  const transactionsRaw = blockRaw.transactions.map(tx => {
+  const transactionsRaw = blockRaw.transactions.map((tx) => {
     return {...tx, block: blockRaw.height};
   })
 

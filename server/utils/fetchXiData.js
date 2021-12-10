@@ -38,6 +38,10 @@ const getWalletTxs = async (address, latestBlock, pageNo = 1) => {
     })
     searchBlock--;
   }
+
+  // add the block of each transaction
+  transactions = await getAllTxBlock(transactions, latestBlock);
+
   return transactions;
 }
 
@@ -47,7 +51,7 @@ const getWalletTxs = async (address, latestBlock, pageNo = 1) => {
 // This is limited to 10 per page for performance purposes, so there is no need to iterate over every block every time. 
 const getTxBlock = async (txHash, latestBlock) => {
   let searchBlock = latestBlock
-  
+  console.log(searchBlock);
   let txBlock = null;
 
   while (!txBlock && searchBlock > 0) {
@@ -65,4 +69,13 @@ const getTxBlock = async (txHash, latestBlock) => {
   return txBlock;
 }
 
-module.exports = {fetchXi, getWalletTxs, getTxBlock}
+// iterate over list of transactions to add block to each
+const getAllTxBlock = async (txs, latestBlock) => {
+  const txsWithBlock = await Promise.all(txs.map(async tx => {
+    const blockHeight = await getTxBlock(tx.hash, latestBlock);
+    return {...tx, block: blockHeight}
+  }));
+  return txsWithBlock;
+}
+
+module.exports = {fetchXi, getWalletTxs, getTxBlock, getAllTxBlock}
