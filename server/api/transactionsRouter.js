@@ -9,16 +9,16 @@ transactionsRouter.get('/', async (req, res) => {
 
   //FIX: need to figure out how to count total number of transactions to work out total number of pages!
 
-  const transactionsRaw = await fetchXi('/transactions');
+  let transactionsRaw = await fetchXi('/transactions');
   if (transactionsRaw.error) {
     res.status(400).send(transactionsRaw.error)
   } 
 
   // add the block associated with each transaction
-  transactions = await getAllTxBlock(transactions, latestBlock);
+  transactionsRaw = await getAllTxBlock(transactionsRaw, req.latestBlock);
 
   // clean data so readable by by Table componenet in Vue app
-  const transactionsClean = cleanListOfData(transactionsWithBlock);
+  const transactionsClean = cleanListOfData(transactionsRaw);
 
   res.send(transactionsClean);
 })

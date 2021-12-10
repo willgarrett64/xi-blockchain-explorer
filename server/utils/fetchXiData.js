@@ -51,7 +51,6 @@ const getWalletTxs = async (address, latestBlock, pageNo = 1) => {
 // This is limited to 10 per page for performance purposes, so there is no need to iterate over every block every time. 
 const getTxBlock = async (txHash, latestBlock) => {
   let searchBlock = latestBlock
-  console.log(searchBlock);
   let txBlock = null;
 
   while (!txBlock && searchBlock > 0) {
