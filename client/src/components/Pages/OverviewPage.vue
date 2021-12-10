@@ -16,11 +16,13 @@
       :tableHeader="title + ' Transactions'"
       :type="'horizontal'"
     />
+    <Loader v-if="dataLoading"/>
   </div>
 </template>
 
 <script>
 import TableWrapper from "../Table/TableWrapper.vue";
+import Loader from "../Loader/Loader.vue"
 import {fetchData} from "../../utils/fetchData.js";
 
 export default {
@@ -29,6 +31,7 @@ export default {
   data() {
     return {
       overviewData: {},
+      dataLoading: false,
       dataLoaded: false,
     }
   },
@@ -39,19 +42,22 @@ export default {
     // update block data if the route changes
     $route(to, from) {
       if (to !== from) {
+        this.dataLoaded = false;
         this.getData(this.endpoint);
       }
     }
   },
   methods: {
     async getData(endpoint) {
-      const data = await fetchData(endpoint);
-      this.overviewData = data;
+      this.dataLoading = true;
+      this.overviewData = await fetchData(endpoint);
+      this.dataLoading = false;
       this.dataLoaded = true;
     },
   },
   components: {
     TableWrapper,
+    Loader
   }
 }
 </script>

@@ -7,11 +7,13 @@
       :tableHeader="title"
       :type="'horizontal'"
     />
+    <Loader v-if="dataLoading"/>
   </div>
 </template>
 
 <script>
 import TableWrapper from "../Table/TableWrapper.vue";
+import Loader from "../Loader/Loader.vue"
 import {fetchData} from "../../utils/fetchData.js";
 
 export default {
@@ -20,6 +22,7 @@ export default {
   data() {
     return {
       tableData: [],
+      dataLoading: false,
       dataLoaded: false,
     }
   },
@@ -38,12 +41,15 @@ export default {
   },
   methods: {
     async getData(endpoint) {
+      this.dataLoading = true;
       this.tableData = await fetchData(endpoint);
+      this.dataLoading = false;
       this.dataLoaded = true;
     },
   },
   components: {
     TableWrapper,
+    Loader
   }
 }
 </script>
