@@ -2,6 +2,7 @@
   <nav class="navbar">
     <router-link to="/">
       <img 
+        v-on:click="toggleBurgerMenu"
         :src="require(`@/assets/images/xi-logo.jpg`)" 
         alt="xi logo" 
         class="logo-img"
@@ -60,7 +61,7 @@ export default {
   },
   methods: {
     toggleBurgerMenu() {
-      document.querySelector('.nav-links').classList.toggle('open')
+      document.querySelector('.nav-links').classList.toggle('open');
     }
   }
 };
@@ -75,7 +76,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-right: 20px;
   height: 8vh;
 }
 
@@ -84,41 +84,60 @@ export default {
 }
 
 .menu-icon {
-  height: 4vh;
-  width: 4vh;
-}
-
-.menu-icon:hover {
-  cursor: pointer;
+  margin-right: 30px;
+  display: none;
 }
 
 .nav-links {
-  position: fixed;
-  z-index: 100;
-  top: 8vh;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 0vw;
-  height: 0;
-  transition: 0.8s;
-  overflow: hidden;
   background-color: var(--xi-blue);
 }
 
-.nav-links.open {
-  width: 100vw;
-  height: 92vh;
+.nav-links ul {
+  display: flex;
+  list-style: none;
 }
 
-.nav-links ul {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 92vh;
-  width: 100vw;
-  list-style: none;
+/* Uncollapse burger menu for larger screens */
+@media screen and (max-width: 750px) {
+  .menu-icon {
+    display: block;
+    height: 4vh;
+    width: 4vh;
+  }
+
+  .menu-icon:hover {
+    cursor: pointer;
+  }
+
+  .nav-links {
+    position: fixed;
+    z-index: 100;
+    top: 8vh;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 0vw;
+    height: 0vw;
+    transition: 0.8s;
+    overflow: hidden;
+    background-color: var(--xi-blue);
+  }
+
+  .nav-links.open {
+    width: 100vw;
+    height: 92vh;
+  }
+
+  .nav-links ul {
+    position: absolute;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    height: 92vh;
+    width: 100vw;
+    list-style: none;
+  }
 }
 
 </style>

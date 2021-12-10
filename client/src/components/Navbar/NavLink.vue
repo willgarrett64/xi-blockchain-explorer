@@ -22,8 +22,8 @@ export default {
 
 <style>
 .nav-link {
-  width: 100%;
-  height: 100px;
+  width: 150px;
+  height: 8vh;
   background-color: var(--xi-light-blue);
   border-top: solid 1px var(--xi-very-light-blue);
   border-bottom: solid 1px var(--xi-very-light-blue);
@@ -54,6 +54,13 @@ export default {
 
 .nav-link .router-link-exact-active:hover {
   color: var(--xi-blue);
+}
+
+@media screen and (max-width: 750px) {
+  .nav-link {
+    width: 100%;
+    height: 100px;
+  }
 }
 
 </style>
