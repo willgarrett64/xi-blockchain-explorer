@@ -1,8 +1,8 @@
 <template>
-  <td v-if="to" :data-label="header">
+  <td v-if="to" :data-label="header + ':'">
     <router-link :to="to">{{ data }}</router-link>
   </td>
-  <td v-else :data-label="header">
+  <td v-else :data-label="header + ':'">
     {{ data }}
   </td>
 </template>

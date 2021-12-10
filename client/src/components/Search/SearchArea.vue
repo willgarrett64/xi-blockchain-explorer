@@ -21,7 +21,8 @@ export default {
 <style>
 .search-area {
   position: relative;
-  height: 5vh;
+  height: 6vh;
+  top: 8vh;
   background-color: var(--xi-orange);
   background-image: url('../../assets/images/banner.jpg');
   background-size: contain;

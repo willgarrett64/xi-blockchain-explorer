@@ -25,8 +25,6 @@ export default {
   width: 150px;
   height: 8vh;
   background-color: var(--xi-light-blue);
-  border-top: solid 1px var(--xi-very-light-blue);
-  border-bottom: solid 1px var(--xi-very-light-blue);
   align-self: center;
   justify-self: center;
   padding: 0;
@@ -56,10 +54,12 @@ export default {
   color: var(--xi-blue);
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 900px) {
   .nav-link {
     width: 100%;
     height: 100px;
+    border-top: solid 1px var(--xi-very-light-blue);
+    border-bottom: solid 1px var(--xi-very-light-blue);
   }
 }
 

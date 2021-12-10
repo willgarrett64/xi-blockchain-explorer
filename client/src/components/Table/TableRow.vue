@@ -1,5 +1,5 @@
 <template>
-  <tr >
+  <tr>
     <TableData 
       v-for="header in headers"
       :key="header"

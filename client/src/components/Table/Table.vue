@@ -58,19 +58,23 @@ export default {
 /*#region General table styles */
 table {
   display: block;
+  width: 100%;
   border-collapse: collapse;
   text-align: left;
   font-size: 0.8rem;
   color: black;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th, tr, td {
-  padding: 15px;
+  padding: 0.8rem;
   background-color: white;
 }
 
-tr {
-  max-width: 100%;
+th, td {
+  width: 500px;
+  white-space: nowrap;
 }
 
 th {
@@ -81,6 +85,7 @@ th {
 td {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 td a {
@@ -91,31 +96,28 @@ td a:hover {
   color: var(--xi-dark-orange);
 }
 
-
-
 tr:hover {
   background-color: rgb(218, 218, 218);
 }
 /*#endregion General table styles */
 
 /*#region Horizontal table styles */
-.horizontal-table {
-  width: 100%;
-  overflow-x: scroll;
-}
-
 .horizontal-table td {
   border-bottom: solid 1px var(--xi-orange);
-  max-width: 200px;
+  min-width: 30px;
+  max-width: 85px;
 }
+
+.horizontal-table tr:last-child td {
+    border-bottom: none;
+  }
 /*#endregion Horizontal table styles */
 
 
 /*#region Collapse horizontal table for mobile devices */
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 800px) {
   .horizontal-table :is(thead, tbody, tr, th, td) {
     display: block;
-    max-width: none;
   }
   
   /* Hide table headers (but not display: none;, for accessibility) */
@@ -124,29 +126,38 @@ tr:hover {
   }
 
   .horizontal-table tr { 
-    border-bottom: 1px solid var(--xi-orange); 
-    border-top: 1px solid var(--xi-orange); 
+    /* border-bottom: 1px solid var(--xi-orange); 
+    border-top: 1px solid var(--xi-orange);  */
+    margin-bottom: 8px;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
   }
 	
 	.horizontal-table td { 
 		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid var(--xi-blue); 
 		position: relative;
-    padding: 6px 0 6px 35px;
-		padding-left: 35%; 
+		border-bottom: 1px solid var(--xi-orange); 
+    padding: 8px 10px;
+		padding-left: 100px; 
+    width: unset;
+    min-width: unset;
+    max-width: unset;
 	}
+
+  .horizontal-table td:last-child {
+    border-bottom: none;
+  }
 	
 	.horizontal-table td:before { 
 		/* Now like a table header */
 		position: absolute;
 		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 35%; 
-		padding-right: 10px; 
+		top: 8px;
+		left: 10px;
 		white-space: nowrap;
     content: attr(data-label);
+    font-weight: bold;
 	}
 
 }  
@@ -158,17 +169,17 @@ tr:hover {
   width: 100%;
 }
 
-.vertical-table tbody {
-  width: 100%;
-}
-
 .vertical-table th {
-  width: 20%;
+  width: 100px;
 }
 
 .vertical-table td {
-  width: 80%;
+  width: 100%;
+  min-width: 50px;
+  max-width: 100px;
+  overflow: hidden;
 }
+
 /*#endregion Vertical table styles*/
 
 

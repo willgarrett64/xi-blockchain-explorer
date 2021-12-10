@@ -29,7 +29,7 @@ export default {
 }
 
 .loader p {
-  margin-top: 133px;
+  margin-top: 128px;
 }
 
 .loader img {
@@ -37,7 +37,7 @@ export default {
   animation: spin 2s linear infinite;
   height: 80px;
   width: 80px;
-  top: calc(50% - 40px);
+  top: 18%;
   left: calc(50% - 40px);
   border-color: var(--xi-orange);
   border-style: solid;

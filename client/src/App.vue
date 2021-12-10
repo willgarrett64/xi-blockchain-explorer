@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <Navbar />
-      <SearchArea />
+      <SearchArea /> 
     </header>
     <main>
       <router-view></router-view>
@@ -39,7 +39,9 @@ export default {
 }
 
 html {
+  width: 100vw;
   background-color: rgb(216, 224, 238);
+  overflow-x: hidden;
 }
 
 :root {
@@ -52,13 +54,19 @@ html {
 }
 
 header {
-  position: fixed;
   width: 100vw;
-  z-index: 20;
 }
 
 main {
   box-sizing: border-box;
-  padding: 18vh 4vw;
+  padding: 14vh 5vw;
+  overflow: hidden;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: left;
+  margin-bottom: 10px;
 }
 </style>

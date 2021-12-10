@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from 'vue-router';
 import App from "./App.vue";
-import Home from "./components/Home.vue";
+import Home from "./components/Pages/Home.vue";
 import ListAllPage from "./components/Pages/ListAllPage.vue";
 import OverviewPage from "./components/Pages/OverviewPage.vue";
 

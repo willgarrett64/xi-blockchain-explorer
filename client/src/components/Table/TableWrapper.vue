@@ -1,6 +1,6 @@
 <template>
   <div class="table-wrapper">
-    <h3>{{ tableHeader }}</h3>
+    <h3 class="section-header">{{ tableHeader }}</h3>
     <Table 
       :headers="headers"
       :tableData="tableData"
@@ -30,4 +30,5 @@ export default {
 .table-wrapper {
   width: 100%;
 }
+
 </style>

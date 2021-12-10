@@ -69,7 +69,8 @@ export default {
 
 <style>
 .navbar {
-  position: relative;
+  position: fixed;
+  z-index: 30;
   background-color: var(--xi-blue);
   color: white;
   display: flex;
@@ -77,6 +78,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 8vh;
+  width: 100%;
 }
 
 .navbar .logo-img {
@@ -98,7 +100,7 @@ export default {
 }
 
 /* Uncollapse burger menu for larger screens */
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 900px) {
   .menu-icon {
     display: block;
     height: 4vh;
