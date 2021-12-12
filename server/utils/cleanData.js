@@ -1,9 +1,12 @@
 //convert unix timestamp into an object with date and time in formats dd/mm/yyyy and hh:mm, and when which is minutes since.
 const convertTimestamp = (timestamp) => {
+  //for adding leading zeros
+  const addZero = (num) => num.toString().padStart(2, '0');
+
   // get date and time of timestamp
   const fullDate = new Date(timestamp);
-  const date = fullDate.getDate() + '/' + (fullDate.getMonth() + 1) + '/' + fullDate.getFullYear();
-  const time = fullDate.getHours() + ':' + fullDate.getMinutes();
+  const date = addZero(fullDate.getDate()) + '/' + addZero((fullDate.getMonth() + 1)) + '/' + fullDate.getFullYear();
+  const time = addZero(fullDate.getHours()) + ':' + addZero(fullDate.getMinutes());
 
   // get minutes since timestamp
   const now = Date.now();

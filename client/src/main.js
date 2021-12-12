@@ -5,11 +5,13 @@ import Home from "./components/Pages/Home.vue";
 import ListAllPage from "./components/Pages/ListAllPage.vue";
 import OverviewPage from "./components/Pages/OverviewPage.vue";
 
+// headers for different tables
+const blockHeaders = ['height', 'date', 'time', 'hash', 'ledgerHash', 'miner', 'totalTxs'];
+const txHeaders = ['hash', 'date', 'time', 'block', 'from', 'to', 'amount', 'fee', 'memo'];
+const walletHeaders = ['address', 'balance', 'nonce'];
 
 
-//set up VueRouter
-Vue.use(VueRouter);
-
+//define routes
 const routes = [
   { path: '/', component: Home},
   
@@ -18,7 +20,7 @@ const routes = [
     component: ListAllPage,
     props: route => ({
       title: 'All Blocks',
-      headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
+      headers: blockHeaders,
       endpoint: '/blocks',
       page: route.query.page
     }),
@@ -28,7 +30,7 @@ const routes = [
     component: OverviewPage,
     props: route => ({
       title: 'Block',
-      headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
+      headers: blockHeaders,
       id: route.params.height,
       endpoint: '/blocks/' + route.params.height
     }),
@@ -39,7 +41,7 @@ const routes = [
     component: ListAllPage,
     props: route => ({
       title: 'All Transactions',
-      headers: ['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
+      headers: txHeaders,
       endpoint: '/transactions',
       page: route.query.page
     })
@@ -49,7 +51,7 @@ const routes = [
     component: OverviewPage,
     props: route => ({
       title: 'Transaction',
-      headers: ['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
+      headers: txHeaders,
       id: route.params.hash,
       endpoint: '/transactions/' + route.params.hash
     })
@@ -60,7 +62,7 @@ const routes = [
     component: ListAllPage,
     props: route => ({
       title: 'All Wallets',
-      headers: ['address', 'balance', 'nonce'],
+      headers: walletHeaders,
       endpoint: '/wallets',
       page: route.query.page
     })
@@ -70,7 +72,7 @@ const routes = [
     component: OverviewPage,
     props: route => ({
       title: 'Wallet',
-      headers: ['address', 'balance', 'nonce'],
+      headers: walletHeaders,
       id: route.params.address,
       endpoint: '/wallets/' + route.params.address,
       page: route.query.page
@@ -79,6 +81,8 @@ const routes = [
 
 ]
 
+//set up VueRouter
+Vue.use(VueRouter);
 const router = new VueRouter({
   routes // short for `routes: routes`
 })
