@@ -70,21 +70,21 @@ const addLink = (data, key) => {
     case 'from': 
     case 'miner': 
     case 'address': 
-      return `/wallet/${data[key]}`;
+      return `/wallets/${data[key]}`;
     // links to blocks
     case 'height': 
     case 'block':
-      return `/block/${data[key]}`;
+      return `/blocks/${data[key]}`;
     // also link to block - parent hash refers to the parent block (which is always the previous one to the current block)
     case 'parentHash': 
-      return `/block/${data.height - 1}`;
+      return `/blocks/${data.height - 1}`;
     // both blocks and transactions have a "hash" key
     // to distinguish between them, only blocks have a height property, and only txs have a signature property 
     case 'hash':
       if (data.height) {
-        return `/block/${data.height}`;
+        return `/blocks/${data.height}`;
       } else if (data.signature) {
-        return `/transaction/${data[key]}`;
+        return `/transactions/${data[key]}`;
       }        
       break;
     // all other data will not have a link

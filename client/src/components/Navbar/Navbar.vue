@@ -79,10 +79,15 @@ export default {
   align-items: center;
   height: 8vh;
   width: 100%;
+  overflow:hidden
 }
 
 .navbar .logo-img {
   height: 8vh;
+}
+
+.navbar .logo-img:hover {
+  height: 9vh
 }
 
 .menu-icon {

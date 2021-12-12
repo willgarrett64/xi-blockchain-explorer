@@ -20,8 +20,9 @@ const routes = [
       title: 'All Blocks',
       headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
       endpoint: '/blocks'
-    } 
-  },{ 
+    },
+  },
+  { 
     path: '/transactions', 
     component: ListAllPage,
     props: {
@@ -40,14 +41,14 @@ const routes = [
     } 
   },
   { 
-    path: '/block/:height', 
+    path: '/blocks/:height', 
     component: OverviewPage,
     props: route => ({
       title: 'Block',
       headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
       id: route.params.height,
       endpoint: '/blocks/' + route.params.height
-    })
+    }),
   },
   { 
     path: '/transaction/:hash', 

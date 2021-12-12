@@ -1,6 +1,6 @@
 <template>
   <li class="nav-link" v-on:click="toggleBurgerMenu">
-    <router-link :to="to" exact-path>
+    <router-link :to="to" :exact="exact">
       {{name.toUpperCase()}}
     </router-link>    
   </li>
@@ -12,6 +12,13 @@
 export default {
   name: "NavLink",
   props: ["name", "id", "to"],
+  computed: {
+    exact() {
+      return this.name === 'home' && true 
+      // exact is set on the home ('/') router-link so that the class 'router-link-active' class isn't applied to it for all routes
+      // https://router.vuejs.org/api/#exact
+    }
+  },
   methods: {
     toggleBurgerMenu() {
       document.querySelector('.nav-links').classList.toggle('open')
@@ -46,11 +53,11 @@ export default {
   text-decoration: none;
 }
 
-.nav-link .router-link-exact-active {
+.nav-link .router-link-active {
   background-color: var(--xi-orange);
 }
 
-.nav-link .router-link-exact-active:hover {
+.nav-link .router-link-active:hover {
   color: var(--xi-blue);
 }
 
