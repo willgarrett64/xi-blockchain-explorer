@@ -26,7 +26,6 @@ export default {
   height: 4vh;
   width: 4vh;
   background-color: var(--xi-blue);
-  color: white; /*TEMPORARY*/
   border: none;
 }
 
