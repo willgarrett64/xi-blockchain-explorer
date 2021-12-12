@@ -1,6 +1,6 @@
 <template>
   <button
-    @click="$emit('click-event')"
+    @click="$emit('search')"
     class="search-button"
   >
     <img :src="require(`@/assets/images/search-icon.svg`)"  alt="search icon" class="search-icon" />

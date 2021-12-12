@@ -1,8 +1,8 @@
 <template>
   <div class="search-bar-wrapper">
     <SearchFilter v-model="filter" />
-    <SearchBar v-model="input" :filter="filter" />
-    <SearchButton v-on:click-event="submitSearch" />
+    <SearchBar v-model="input" :filter="filter" v-on:search="submitSearch" />
+    <SearchButton v-on:search="submitSearch" />
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
   <input 
     @input="$emit('input', $event.target.value)"
+    @keyup.enter="$emit('search')"
     class="search-bar"
     type="text" 
     :placeholder="placeholder" 
@@ -43,5 +44,10 @@ export default {
   border-radius: 8px;
   margin: 0;
   text-overflow: ellipsis;
+}
+
+.search-bar:focus {
+  outline: none;
+  border: solid 2px var(--xi-orange);
 }
 </style>
