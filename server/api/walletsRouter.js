@@ -31,7 +31,6 @@ walletsRouter.get('/:address', async (req, res) => {
   const walletRaw = await fetchXi('/wallets/' + walletAddress);
   const transactionsRaw = await getWalletTxs(walletAddress, latestBlock, page);
   
-
   // clean data so readable by by Table componenet in Vue app
   const walletClean = cleanData(walletRaw);
   if (transactionsRaw.length !== 0) {
@@ -41,6 +40,5 @@ walletsRouter.get('/:address', async (req, res) => {
 
   res.send(walletClean)
 })
-
 
 module.exports = walletsRouter;

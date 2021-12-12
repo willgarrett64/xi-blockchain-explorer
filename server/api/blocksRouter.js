@@ -51,6 +51,9 @@ blocksRouter.get('/', async (req, res) => {
 
 // get single block by height
 blocksRouter.get('/:height', async (req, res) => {
+  const page = req.query.page ? req.query.page : 1;
+  const firstTx = (page - 1) * 10
+
   const height = req.params.height;
   
   const blockRaw = await fetchXi('/blocks/' + height);
@@ -63,13 +66,13 @@ blocksRouter.get('/:height', async (req, res) => {
   blockRaw.totalTxs = blockRaw.transactions.length
 
   // add block height to each transaction
-  const transactionsRaw = blockRaw.transactions.map((tx) => {
+  let transactionsRaw = blockRaw.transactions.map((tx) => {
     return {...tx, block: blockRaw.height};
   })
 
   // clean data so readable by by Table componenet in Vue app
   const blockClean = cleanData(blockRaw);
-  const transactionsClean = cleanListOfData(transactionsRaw);
+  const transactionsClean = cleanListOfData(transactionsRaw.slice(firstTx, firstTx + 10));
   blockClean.transactions = transactionsClean;
 
   res.send(blockClean)
