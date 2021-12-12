@@ -1,8 +1,8 @@
 <template>
   <div class="search-bar-wrapper">
-    <SearchFilter />
-    <SearchBar />
-    <SearchButton />
+    <SearchFilter v-model="filter" />
+    <SearchBar v-model="input" />
+    <SearchButton v-on:click-event="submitSearch" />
   </div>
 </template>
 
@@ -14,8 +14,14 @@ import SearchButton from "./SearchButton.vue";
 export default {
   name: "SearchBarWrapper",
   data() { return {
-    
+    input: '',
+    filter: 'block-height'
   }},
+  methods: {
+    submitSearch() {
+      this.$router.push('/block/' + this.input);
+    }
+  },
   components: {
     SearchFilter,
     SearchBar,

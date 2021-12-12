@@ -1,5 +1,6 @@
 <template>
   <input 
+    @input="$emit('input', $event.target.value)"
     class="search-bar"
     type="text" 
     placeholder="PLACEHOLDER" 
@@ -11,12 +12,7 @@
 
 export default {
   name: "SearchBar",
-  data() { return {
-    
-  }},
-  components: {
-
-  }
+  props: ['input'],
 }
 </script>
 

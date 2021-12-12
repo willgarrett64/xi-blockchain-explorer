@@ -1,5 +1,5 @@
 <template>
-  <select name="" id="" class="search-filter">
+  <select @input="$emit('input', $event.target.value)" :value="value" class="search-filter">
     <option value="block-height">Block Height</option>
     <option value="block-hash">Block Hash</option>
     <option value="transaction-hash">TX Hash</option>
@@ -12,9 +12,7 @@
 
 export default {
   name: "SearchFilter",
-  data() { return {
-    
-  }},
+  props: ['value'],
 }
 </script>
 
