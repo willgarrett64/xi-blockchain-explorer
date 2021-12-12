@@ -1,9 +1,8 @@
 <template>
   <select @input="$emit('input', $event.target.value)" :value="value" class="search-filter">
-    <option value="block-height">Block Height</option>
-    <option value="block-hash">Block Hash</option>
-    <option value="transaction-hash">TX Hash</option>
-    <option value="wallet-address">Wallet Address</option>    
+    <option value="/blocks/">Block</option>
+    <option value="/transactions/">Transaction</option>
+    <option value="/wallets/">Wallet</option>    
   </select>
 </template>
 
@@ -22,6 +21,8 @@ export default {
   background-color: var(--xi-blue);
   color: white;
   border: none;
+  width: fit-content;
+  margin-right: 5px;
 }
 
 .search-filter:focus {

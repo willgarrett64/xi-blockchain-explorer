@@ -1,7 +1,7 @@
 <template>
   <div class="search-bar-wrapper">
     <SearchFilter v-model="filter" />
-    <SearchBar v-model="input" />
+    <SearchBar v-model="input" :filter="filter" />
     <SearchButton v-on:click-event="submitSearch" />
   </div>
 </template>
@@ -15,11 +15,12 @@ export default {
   name: "SearchBarWrapper",
   data() { return {
     input: '',
-    filter: 'block-height'
+    filter: '/blocks/'
   }},
   methods: {
     submitSearch() {
-      this.$router.push('/block/' + this.input);
+      // reroute to page for the selected filter and search input
+      this.$router.push(this.filter + this.input);
     }
   },
   components: {
