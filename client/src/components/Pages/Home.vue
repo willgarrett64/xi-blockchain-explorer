@@ -1,23 +1,22 @@
 <template>
   <div class="home-page">
-    <h2>XI Overview</h2>
     <div class="recent-tables">
-      <div class="recent-blocks">
+      <div class="recent-blocks" v-if="this.loaded">
         <TableWrapper
-          v-if="this.loaded"
           :headers="['height', 'hash', 'miner', 'totalTxs', 'when']"
           :tableData="blocks"
           :tableHeader="'Recent Blocks'"
           :type="'horizontal'"
         />
+        <router-link to="/blocks" class="view-all-button">View all blocks</router-link>
       </div>
-      <div class="recent-transactions">
+      <div class="recent-transactions" v-if="this.loaded">
         <TableWrapper
-          v-if="this.loaded"
           :headers="['hash', 'from', 'to', 'amount', 'when']" :tableData="transactions"
           :tableHeader="'Recent Transactions'"
           :type="'horizontal'"
         />
+        <router-link to="/transactions" class="view-all-button">View all transactions</router-link>
       </div>
     </div>
     <Loader v-if="loading"/>
@@ -47,8 +46,13 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    this.blocks = await this.getData('/blocks');
-    this.transactions = await this.getData('/transactions');
+    const blockPromise = this.getData('/blocks');
+    const txPromise = this.getData('/transactions');
+
+    const [blocks, transactions] = await Promise.all([blockPromise, txPromise])
+
+    this.blocks = blocks;
+    this.transactions = transactions;
     this.loading = false;
     this.loaded = true;
   },
@@ -88,6 +92,21 @@ export default {
   grid-column: 1;
   grid-row: 2 / span 1;
 }
+
+.view-all-button {
+  background-color: var(--xi-orange);
+  padding: 5px;
+  border-radius: 8px;
+  margin-top: 10px;
+  float: right;
+  color: black;
+  text-decoration: none;
+}
+
+.view-all-button:hover {
+  background-color: var(--xi-dark-orange);
+}
+
 
 
 /* Put tables side by side on larger screens */

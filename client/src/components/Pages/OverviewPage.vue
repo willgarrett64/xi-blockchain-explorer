@@ -1,6 +1,13 @@
 <template>
   <div class="overview-page">
-    <h2><span>{{ title }}</span>: {{ id }}</h2>
+    <div class="page-title">
+      <h2>{{ title }}</h2>
+      <div class="subtitle">
+        <h3>{{ subtitle }}:  <span class="id">{{ id }}</span></h3>
+        <svg v-on:click="copyToClipboard" class="clipboard-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512"><g><g><path d="m425.5,85.5h-61.9c-1.8-13.9-3.1-24.2-3.1-24.2-1.3-10.2-10-17.9-20.4-17.9h-63.5v-12c0-11.3-9.2-20.4-20.5-20.4-11.3,0-20.5,9.1-20.5,20.4v12h-63.6c-10.4,0-19.1,7.7-20.4,17.9l-3,24.2h-62c-11.3,0-20.5,9.1-20.5,20.4v374.6c0,11.3 9.2,20.4 20.5,20.4h338.9c11.3,0 20.5-9.1 20.5-20.4v-374.6c0.1-11.2-9.1-20.4-20.5-20.4zm-235.4-1.2h131.9l6.7,53.2h-145.3l6.7-53.2zm214.9,375.9h-297.8v-333.8h36.3l-3.6,29c-0.7,5.8 0,22.9 20.4,22.9h191.7c0.1,0 0.1,0 0.2,0 11.4,0 20.5-9.1 20.5-20.4 0-0.7-1.7-14.5-3.9-31.5h36.2v333.8z"/></g></g>
+        </svg>
+      </div>
+    </div>
     <div class="overview-table">
       <TableWrapper
         v-if="dataLoaded"
@@ -52,12 +59,29 @@ export default {
       const query = this.page ? `?page=${this.page}` : ''
       return this.endpoint + query;
     },
+    subtitle() {
+      let subtitle;
+      switch (this.title) {
+        case 'Block':
+          subtitle = 'Height'
+          break;
+        case 'Transaction':
+          subtitle = 'Hash'
+          break;
+        case 'Wallet':
+          subtitle = 'Address'
+          break;
+        default:
+          break;
+      } 
+      return subtitle;
+    },
     signal() {
       return this.controller.signal
     }
   },
   created() {
-    this.getData(this.fullEndpoint, this.signal); //fetch the block data on creating component
+    this.getData(this.fullEndpoint); //fetch the block data on creating component
   },
   unmounted() {
     this.controller.abort(); // abort any requests on unmount
@@ -87,6 +111,9 @@ export default {
       this.dataLoading = false; //turn off loading spinner
       this.dataLoaded = true;
     },
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.id);
+    }
   },
   components: {
     TableWrapper,
@@ -98,10 +125,42 @@ export default {
 <style>
 .overview-page {
   display: grid;
-  grid-template-rows: 30px repeat(3, auto);
+  grid-template-rows: repeat(4, auto);
   grid-template-columns: 100%;
   row-gap: 20px;
 }
+
+.overview-page .page-title {
+  text-align: left;
+  grid-row: 1;
+  margin-bottom: 10px;
+}
+
+.overview-page .page-title .subtitle {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.overview-page .page-title h3 {
+  font-size: 1rem;
+}
+
+.overview-page .page-title h3 .id {
+  font-weight: 500;
+}
+
+.clipboard-icon {
+  height: 1rem;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.clipboard-icon:hover {
+  fill: var(--xi-orange);
+  cursor: pointer;
+}
+
 
 .summary {
   display: flex;
@@ -125,7 +184,7 @@ export default {
 
 @media screen and (min-width: 750px) {
   .overview-page {
-    grid-template-rows: 30px repeat(2, auto);
+    grid-template-rows: repeat(3, auto);
     grid-template-columns: 2fr 1fr;
     column-gap: 50px;
   }

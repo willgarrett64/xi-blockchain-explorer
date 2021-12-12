@@ -19,6 +19,9 @@ export default {
   }},
   methods: {
     submitSearch() {
+      // don't search if nothing in search bar
+      if (!this.input) return;
+
       // reroute to page for the selected filter and search input
       this.$router.push(this.filter + this.input);
     }

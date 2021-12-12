@@ -5,6 +5,7 @@
       <SearchArea /> 
     </header>
     <main>
+      <h2 class="page-header">XI Blockchain Explorer</h2>
       <router-view></router-view>
     </main>
   </div>
@@ -24,9 +25,10 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Saira+Condensed:wght@300;400;600&display=swap');
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Red Hat Text', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -63,6 +65,11 @@ main {
   overflow: hidden;
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.page-header {
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .section-header {

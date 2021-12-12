@@ -88,6 +88,7 @@ export default {
 
   .table-page-icon:hover {
     cursor: pointer;
+    background-color: var(--xi-dark-orange);
   }
 
   .table-page-icon.disabled {
@@ -96,6 +97,7 @@ export default {
 
   .table-page-icon.disabled:hover {
     cursor: unset;
+    background-color: var(--xi-orange);
   }
 
 </style>
