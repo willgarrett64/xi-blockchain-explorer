@@ -35,7 +35,8 @@ const routes = [
       title: 'Block',
       headers: blockHeaders,
       id: route.params.height,
-      endpoint: '/blocks/' + route.params.height
+      endpoint: '/blocks/' + route.params.height,
+      page: route.query.page
     }),
   },
 
@@ -57,7 +58,8 @@ const routes = [
       title: 'Transaction',
       headers: txHeaders,
       id: route.params.hash,
-      endpoint: '/transactions/' + route.params.hash
+      endpoint: '/transactions/' + route.params.hash,
+      page: route.query.page
     })
   },
 

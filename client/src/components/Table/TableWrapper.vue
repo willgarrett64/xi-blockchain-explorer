@@ -6,17 +6,17 @@
       :tableData="tableData"
       :type="type"
     />
-    <TablePageButtons v-if="page" :page="page" />
+    <TablePageButtons v-if="page" :page="page" :lastPage="lastPage" />
   </div>
 </template>
 
 <script>
-import Table from './Table.vue';
-import TablePageButtons from './TablePageButtons.vue';
+import Table from "./Table.vue";
+import TablePageButtons from "./TablePageButtons.vue";
 
 export default {
   name: "TableWrapper",
-  props: ['tableHeader', 'headers', 'tableData', 'type', 'page'],
+  props: ["tableHeader", "headers", "tableData", "type", "page", "lastPage"],
   data() {
     return {
       

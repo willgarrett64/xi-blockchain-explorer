@@ -24,6 +24,7 @@
         :tableHeader="title + ' Transactions'"
         :type="'horizontal'"
         :page="page ? page : 1"
+        :lastPage="overviewData.totalTxs && Math.ceil(parseInt(overviewData.totalTxs.data) / 10)"
       />
     </div>
     <Loader v-if="dataLoading"/>
@@ -56,7 +57,7 @@ export default {
     }
   },
   created() {
-    this.getData(this.fullEndpoint); //fetch the block data on creating component
+    this.getData(this.fullEndpoint, this.signal); //fetch the block data on creating component
   },
   unmounted() {
     this.controller.abort(); // abort any requests on unmount
