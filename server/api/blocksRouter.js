@@ -4,55 +4,48 @@ const {cleanData, cleanListOfData} = require('../utils/cleanData');
 
 const blocksRouter = express.Router();
 
-// get 1st page of blocks (10 most recent)
+
+// get list of all blocks (separated into pages of 10)
 blocksRouter.get('/', async (req, res) => {
-  const blocksRaw = await fetchXi('/blocks');
-  if (blocksRaw.error) {
-    res.status(400).send(blocksRaw.error)
-  } 
-
-  // add total number of transactions
-  blocksRaw.forEach((block, index, blocksRaw) => {
-    blocksRaw[index].totalTxs = block.transactions.length;
-    delete blocksRaw[index].transactions; //remove transactions as not needed
-  });
-
-  // clean data so readable by by Table componenet in Vue app
-  const blocksClean = cleanListOfData(blocksRaw);
-
-  res.send(blocksClean)
-})
-
-
-// return list of 10 blocks for subsequent pages (after the intial 10 most recent)
-blocksRouter.get('/page/:num', async (req, res) => {
-  const pageNo = req.params.num;
-  if (pageNo > req.numberOfBlockPages) {
-    res.status(400).send("page not found")
-  }
-
-  const latestBlock = req.latestBlock;
-
-  // this refers to the first block height for the selected page - e.g. if the most recent block is 35, page 2 would start from block 25, and page 3 from block 15, etc
-  const startingBlock = latestBlock - (10 * (pageNo - 1));
-
-  // since '/blocks' only returns latest 10, the only way to get previous blocks is by requesting them one by one using '/blocks/:height'
-  const promises = [];
-  for (let i = startingBlock; i > startingBlock - 10 && i > 0; i--) {
-    promises.push(fetchXi('/blocks/' + i));
-  }
-  const blocksRaw = await Promise.all(promises)
+  const page = req.query.page;
+  let blocksRaw; // will hold raw data from api
   
-  // add total number of transactions
+  // if no page query, request is for page 1
+  // '/blocks' endpoint gets 10 most recent so no need to get blocks 1 by 1
+  if (!page || page == 1) {
+    blocksRaw = await fetchXi('/blocks');
+    if (blocksRaw.error) {
+      res.status(400).send(blocksRaw.error)
+    } 
+  } 
+  // for subsequent pages, it is only possible to get blocks one by one using '/blocks/:height' endpoint
+  if (page > 1) {
+    const latestBlock = req.latestBlock;
+
+    // if (pageNo > req.numberOfBlockPages) {
+    //   res.status(400).send("page not found")
+    // }
+  
+    // this refers to the first block height for the selected page - e.g. if the most recent block is 35, page 2 would start from block 25, and page 3 from block 15, etc
+    const startingBlock = latestBlock - (10 * (page - 1));
+  
+    const promises = [];
+    for (let i = startingBlock; i > startingBlock - 10 && i > 0; i--) {
+      promises.push(fetchXi('/blocks/' + i));
+    }
+    blocksRaw = await Promise.all(promises);    
+  }
+
+  // add total number of transactions property
   blocksRaw.forEach((block, index, blocksRaw) => {
     blocksRaw[index].totalTxs = block.transactions.length;
     delete blocksRaw[index].transactions; //remove transactions as not needed
   });
-
+  
   // clean data so readable by by Table componenet in Vue app
   const blocksClean = cleanListOfData(blocksRaw);
 
-  res.send(blocksClean)
+  res.send(blocksClean);
 })
 
 

@@ -1,18 +1,43 @@
 const express = require('express');
-const {fetchXi, getTxBlock, getAllTxBlock} = require('../utils/fetchXiData');
+const {fetchXi, getAllTxBlock} = require('../utils/fetchXiData');
 const {cleanData, cleanListOfData} = require('../utils/cleanData')
 
 const transactionsRouter = express.Router();
 
-// get 1st page of transactions (10 most recent blocks)
+// get list of all transactions (separated into pages of 10)
 transactionsRouter.get('/', async (req, res) => {
-
   //FIX: need to figure out how to count total number of transactions to work out total number of pages!
-
-  let transactionsRaw = await fetchXi('/transactions');
-  if (transactionsRaw.error) {
-    res.status(400).send(transactionsRaw.error)
-  } 
+  const page = req.query.page;
+  let transactionsRaw; // will hold raw data from api
+  
+  // if no page query, request is for page 1
+  // '/transactions' endpoint gets 10 most recent so no need to get txs 1 by 1
+  if (!page || page == 1) {
+    transactionsRaw = await fetchXi('/transactions');
+    if (transactionsRaw.error) {
+      res.status(400).send(transactionsRaw.error)
+    } 
+  }
+  // for subsequent pages, it is only possible to get blocks one by one using '/blocks/:height' endpoint
+  if (page > 1) {
+    // since '/transactions' only returns latest 10, the only way to get previous transactions is by going back through blocks one by one using '/blocks/:height' and extracting the transactions from there
+    let latestBlock = req.latestBlock;
+    const skipTxs = (page - 1) * 10; // skip 10 transaction per page - i.e. if we want page 3, we need to skip the first 20 transactions as they are for pages 1 and 2
+    
+    transactionsRaw = [];
+    let skippedTxs = 0; // count how many txs have been skipped
+    
+    while (transactionsRaw.length < 10 && latestBlock > 0) {
+      const block = await fetchXi('/blocks/' + latestBlock);
+      block.transactions.forEach(tx => {
+        if (skippedTxs >= skipTxs && transactionsRaw.length < 10) {
+          transactionsRaw.push(tx);
+        } 
+        skippedTxs++;
+      })
+      latestBlock--;
+    }
+  }
 
   // add the block associated with each transaction
   transactionsRaw = await getAllTxBlock(transactionsRaw, req.latestBlock);
@@ -21,39 +46,6 @@ transactionsRouter.get('/', async (req, res) => {
   const transactionsClean = cleanListOfData(transactionsRaw);
 
   res.send(transactionsClean);
-})
-
-
-// return list of 10 transactions for subsequent pages (after the intial 10 most recent)
-transactionsRouter.get('/page/:num', async (req, res) => {
-  const pageNo = req.params.num;
-  let latestBlock = req.latestBlock;
-  
-  const skipTxs = (pageNo - 1) * 10;
-
-  //FIX: need to figure out how to count total number of transactions to work out total number of pages!
-
-  // since '/transactions' only returns latest 10, the only way to get previous transactions is by going back through blocks one by one using '/blocks/:height', extracting the transactions from there
-  let transactions = [];
-  let txCount = 1;
-  while (transactions.length < 10 && latestBlock > 10) {
-    const block = await fetchXi('/blocks/' + latestBlock);
-    block.transactions.forEach(tx => {
-      if (txCount > skipTxs) {
-        transactions.push(tx);
-      } 
-      txCount++;
-    })
-    latestBlock--;
-  }
-
-  // add the block associated with each transaction
-  transactions = await getAllTxBlock(transactions, latestBlock);
-  
-  // clean data so readable by by Table componenet in Vue app
-  const transactionsClean = cleanListOfData(transactionsWithBlock);
-
-  res.send(transactionsClean)
 })
 
 

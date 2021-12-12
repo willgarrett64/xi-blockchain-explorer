@@ -16,29 +16,12 @@ const routes = [
   { 
     path: '/blocks', 
     component: ListAllPage,
-    props: {
+    props: route => ({
       title: 'All Blocks',
       headers: ['date', 'time', 'height', 'hash', 'parentHash', 'ledgerHash', 'miner', 'totalTxs'],
-      endpoint: '/blocks'
-    },
-  },
-  { 
-    path: '/transactions', 
-    component: ListAllPage,
-    props: {
-      title: 'All Transactions',
-      headers: ['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
-      endpoint: '/transactions'
-    } 
-  },
-  { 
-    path: '/wallets', 
-    component: ListAllPage,
-    props: {
-      title: 'All Wallets',
-      headers: ['address', 'balance', 'nonce'],
-      endpoint: '/wallets'
-    } 
+      endpoint: '/blocks',
+      page: route.query.page
+    }),
   },
   { 
     path: '/blocks/:height', 
@@ -50,8 +33,19 @@ const routes = [
       endpoint: '/blocks/' + route.params.height
     }),
   },
+
   { 
-    path: '/transaction/:hash', 
+    path: '/transactions', 
+    component: ListAllPage,
+    props: route => ({
+      title: 'All Transactions',
+      headers: ['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo'],
+      endpoint: '/transactions',
+      page: route.query.page
+    })
+  },
+  { 
+    path: '/transactions/:hash', 
     component: OverviewPage,
     props: route => ({
       title: 'Transaction',
@@ -60,14 +54,26 @@ const routes = [
       endpoint: '/transactions/' + route.params.hash
     })
   },
+
   { 
-    path: '/wallet/:address', 
+    path: '/wallets', 
+    component: ListAllPage,
+    props: route => ({
+      title: 'All Wallets',
+      headers: ['address', 'balance', 'nonce'],
+      endpoint: '/wallets',
+      page: route.query.page
+    })
+  },
+  { 
+    path: '/wallets/:address', 
     component: OverviewPage,
     props: route => ({
       title: 'Wallet',
       headers: ['address', 'balance', 'nonce'],
       id: route.params.address,
-      endpoint: '/wallets/' + route.params.address
+      endpoint: '/wallets/' + route.params.address,
+      page: route.query.page
     })
   },
 

@@ -6,6 +6,7 @@
       :headers="headers"
       :tableHeader="title"
       :type="'horizontal'"
+      :page="page ? page : 1"
     />
     <Loader v-if="dataLoading"/>
   </div>
@@ -18,7 +19,7 @@ import {fetchData} from "../../utils/fetchData.js";
 
 export default {
   name: "ListAllPage",
-  props: ['title', 'headers', 'endpoint'],
+  props: ['title', 'headers', 'endpoint', "page"],
   data() {
     return {
       tableData: [],
@@ -26,16 +27,21 @@ export default {
       dataLoaded: false,
     }
   },
-
+  computed: {
+    fullEndpoint() {
+      const query = this.page ? `?page=${this.page}` : ''
+      return this.endpoint + query;
+    }
+  },
   created() {
-    this.getData(this.endpoint)
+    this.getData(this.fullEndpoint)
   },
   watch: {
     // update block data if the route changes
     $route(to, from) {
       if (to !== from) {
         this.dataLoaded = false;
-        this.getData(this.endpoint);
+        this.getData(this.fullEndpoint);
       }
     }
   },

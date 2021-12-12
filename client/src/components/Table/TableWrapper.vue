@@ -6,22 +6,25 @@
       :tableData="tableData"
       :type="type"
     />
+    <TablePageButtons v-if="page" :page="page" />
   </div>
 </template>
 
 <script>
 import Table from './Table.vue';
+import TablePageButtons from './TablePageButtons.vue';
 
 export default {
   name: "TableWrapper",
-  props: ['tableHeader', 'headers', 'tableData', 'type'],
+  props: ['tableHeader', 'headers', 'tableData', 'type', 'page'],
   data() {
     return {
       
     }
   },
   components: {
-    Table
+    Table,
+    TablePageButtons
   }
 }
 </script>
@@ -30,5 +33,4 @@ export default {
 .table-wrapper {
   width: 100%;
 }
-
 </style>

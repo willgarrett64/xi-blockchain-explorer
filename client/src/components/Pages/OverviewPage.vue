@@ -23,6 +23,7 @@
         :headers="['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
         :tableHeader="title + ' Transactions'"
         :type="'horizontal'"
+        :page="page ? page : 1"
       />
     </div>
     <Loader v-if="dataLoading"/>
@@ -36,7 +37,7 @@ import {fetchData} from "../../utils/fetchData.js";
 
 export default {
   name: "OverviewPage",
-  props: ['title', 'headers', 'endpoint', 'id'],
+  props: ['title', 'headers', 'endpoint', 'id', 'page'],
   data() {
     return {
       overviewData: {},
@@ -44,15 +45,21 @@ export default {
       dataLoaded: false,
     }
   },
+  computed: {
+    fullEndpoint() {
+      const query = this.page ? `?page=${this.page}` : ''
+      return this.endpoint + query;
+    }
+  },
   created() {
-    this.getData(this.endpoint); //fetch the block data on creating component
+    this.getData(this.fullEndpoint); //fetch the block data on creating component
   },
   watch: {
     // update block data if the route changes
     $route(to, from) {
       if (to !== from) {
         this.dataLoaded = false;
-        this.getData(this.endpoint);
+        this.getData(this.fullEndpoint);
       }
     }
   },

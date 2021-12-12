@@ -18,63 +18,67 @@ const fetchXi = async (endpoint) => {
 // This is limited to 10 per page for performance purposes, so there is no need to iterate over every block every time. 
 const getWalletTxs = async (address, latestBlock, pageNo = 1) => {
   let searchBlock = latestBlock;
- 
   // number of transactions to skip based on page number (10 per page)
   const skipTxs = (pageNo - 1) * 10;
 
   //FIX: need to figure out how to count total number of transactions to work out total number of pages!
 
   let transactions = [];
-  let txCount = 1;
+  let skippedTxs = 0;
   while (transactions.length < 10 && searchBlock > 0) {
     const block = await fetchXi('/blocks/' + searchBlock);
     block.transactions.forEach(tx => {
       if (tx.for === address || tx.to === address) {
-        if (txCount > skipTxs) {
+        if (skippedTxs > skipTxs) {
+          tx.block = searchBlock; // add block height to tx data
           transactions.push(tx);
         } 
+        skippedTxs++;
       }
-      txCount++;
     })
     searchBlock--;
   }
-
-  // add the block of each transaction
-  transactions = await getAllTxBlock(transactions, latestBlock);
-
+  if (transactions.length === 0) return null; 
   return transactions;
 }
 
 
-// Issue: transaction data from the xi api doesn't come with associated block height
-// Solution: as there is no list of all transactions to filter through, I iterate through each block and filter through the list of that block's transactions to get matches (ie. where wallet address argument matches either "to" or "for" address).
-// This is limited to 10 per page for performance purposes, so there is no need to iterate over every block every time. 
-const getTxBlock = async (txHash, latestBlock) => {
-  let searchBlock = latestBlock
-  let txBlock = null;
+/* 
+Iterate over list of transactions and return array with block height added to each transaction under 'block' key. 
 
-  while (!txBlock && searchBlock > 0) {
+-Issue: transaction data from the xi api doesn't come with associated block height
+-Solution: as there is no list of all transactions to filter through, I iterate through each block and filter through the list of that block's transactions to get a match (ie. where a block tx list contains a tx with the hash being searched for
+*/
+const getAllTxBlock = async (transactions, latestBlock) => {
+  const blocks = []; // list of blocks (each containing list of transactions)
+  let searchBlock = latestBlock;
+  let txsWithBlock;
+
+  do {
     const block = await fetchXi('/blocks/' + searchBlock);
-    if(block.transactions.some(tx => txHash === tx.hash)) {
-      txBlock = searchBlock
-    }
+    blocks.push(block); // each block obtained
+
+    console.log(blocks.length);
+
+    txsWithBlock = transactions.map(transaction => {
+      let txBlock = null;
+      
+      while(!txBlock) {
+        txBlock = blocks.find(block => {
+          return (block.transactions.some(tx => tx.hash === transaction.hash))
+        })
+      }
+
+      return {...transaction, block: txBlock.height}
+    })
+
     searchBlock--;
-  }
 
-  if (!txBlock) {
-    return null;
-  }
+  } while (txsWithBlock.length !== transactions.length && searchBlock > 0);
 
-  return txBlock;
-}
+  if (txsWithBlock.length !== transactions.length) return null
 
-// iterate over list of transactions to add block to each
-const getAllTxBlock = async (txs, latestBlock) => {
-  const txsWithBlock = await Promise.all(txs.map(async tx => {
-    const blockHeight = await getTxBlock(tx.hash, latestBlock);
-    return {...tx, block: blockHeight}
-  }));
   return txsWithBlock;
 }
 
-module.exports = {fetchXi, getWalletTxs, getTxBlock, getAllTxBlock}
+module.exports = {fetchXi, getWalletTxs, getAllTxBlock}
