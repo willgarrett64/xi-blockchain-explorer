@@ -61,7 +61,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: black;
   border-radius: 8px;
   overflow: hidden;
@@ -108,14 +108,17 @@ tr:hover {
   max-width: 85px;
 }
 
-.horizontal-table tr:last-child td {
+@media only screen and (min-width: 900px) {
+  .horizontal-table tr:last-child td {
     border-bottom: none;
   }
+}
+
 /*#endregion Horizontal table styles */
 
 
 /*#region Collapse horizontal table for mobile devices */
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 900px) {
   .horizontal-table :is(thead, tbody, tr, th, td) {
     display: block;
   }
@@ -148,7 +151,7 @@ tr:hover {
   .horizontal-table td:last-child {
     border-bottom: none;
   }
-	
+
 	.horizontal-table td:before { 
 		/* Now like a table header */
 		position: absolute;

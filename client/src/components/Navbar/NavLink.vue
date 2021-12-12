@@ -21,7 +21,8 @@ export default {
   },
   methods: {
     toggleBurgerMenu() {
-      document.querySelector('.nav-links').classList.toggle('open')
+      document.querySelector('.nav-links').classList.toggle('open');
+      document.querySelector('.menu-icon').classList.toggle('open');
     },
   }
 };
