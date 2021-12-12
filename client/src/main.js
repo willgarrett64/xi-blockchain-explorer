@@ -4,6 +4,7 @@ import App from "./App.vue";
 import Home from "./components/Pages/Home.vue";
 import ListAllPage from "./components/Pages/ListAllPage.vue";
 import OverviewPage from "./components/Pages/OverviewPage.vue";
+import PageNotFound from "./components/Pages/PageNotFound.vue";
 
 // headers for different tables
 const blockHeaders = ['height', 'date', 'time', 'hash', 'ledgerHash', 'miner', 'totalTxs'];
@@ -13,8 +14,10 @@ const walletHeaders = ['address', 'balance', 'nonce'];
 
 //define routes
 const routes = [
+  // home page route
   { path: '/', component: Home},
   
+  // block routes
   { 
     path: '/blocks', 
     component: ListAllPage,
@@ -36,6 +39,7 @@ const routes = [
     }),
   },
 
+  // transaction routes
   { 
     path: '/transactions', 
     component: ListAllPage,
@@ -57,6 +61,7 @@ const routes = [
     })
   },
 
+  // wallet routes
   { 
     path: '/wallets', 
     component: ListAllPage,
@@ -79,6 +84,11 @@ const routes = [
     })
   },
 
+  // catch all other routes and display Page Not Found
+  {
+    path: '*',
+    component: PageNotFound
+  }
 ]
 
 //set up VueRouter

@@ -15,7 +15,7 @@ blocksRouter.get('/', async (req, res) => {
   if (!page || page == 1) {
     blocksRaw = await fetchXi('/blocks');
     if (blocksRaw.error) {
-      res.status(400).send(blocksRaw.error)
+      res.status(400).send(blocksRaw)
     } 
   } 
   // for subsequent pages, it is only possible to get blocks one by one using '/blocks/:height' endpoint
@@ -55,12 +55,12 @@ blocksRouter.get('/:height', async (req, res) => {
   
   const blockRaw = await fetchXi('/blocks/' + height);
   if (blockRaw.error) {
-    res.status(400).send(blockRaw)
+    res.status(400).send(blockRaw);
+    return;
   } 
 
   // add total number of transactions
   blockRaw.totalTxs = blockRaw.transactions.length
-
 
   // add block height to each transaction
   const transactionsRaw = blockRaw.transactions.map((tx) => {

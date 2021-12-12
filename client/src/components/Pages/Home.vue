@@ -37,6 +37,12 @@ export default {
       loading: false,
       blocks: [],
       transactions: [],
+      controller: new AbortController(),
+    }
+  },
+  computed: {
+    signal() {
+      return this.controller.signal
     }
   },
   async mounted() {
@@ -46,9 +52,12 @@ export default {
     this.loading = false;
     this.loaded = true;
   },
+  unmounted() {
+    this.controller.abort(); // abort any requests on unmount
+  },
   methods: {
     async getData(endpoint) {
-      const data = await fetchData(endpoint);
+      const data = await fetchData(endpoint, this.signal);
       return data;
     },
   },

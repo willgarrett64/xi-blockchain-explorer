@@ -25,30 +25,46 @@ export default {
       tableData: [],
       dataLoading: false,
       dataLoaded: false,
+      controller: new AbortController(),
     }
   },
   computed: {
     fullEndpoint() {
       const query = this.page ? `?page=${this.page}` : ''
       return this.endpoint + query;
+    },
+    signal() {
+      return this.controller.signal
     }
   },
   created() {
     this.getData(this.fullEndpoint)
   },
+  unmounted() {
+    this.controller.abort(); // abort any requests on unmount
+  },
   watch: {
-    // update block data if the route changes
+    // update data if the route changes
     $route(to, from) {
       if (to !== from) {
+        this.controller.abort(); // if changing to new list all (i.e. blocks -> wallets) abort any previous requests
+        this.controller = new AbortController(); // create new controller
         this.dataLoaded = false;
-        this.getData(this.fullEndpoint);
+        this.getData(this.fullEndpoint); // make new request
       }
     }
   },
   methods: {
     async getData(endpoint) {
       this.dataLoading = true;
-      this.tableData = await fetchData(endpoint);
+      const response = await fetchData(endpoint, this.signal);
+
+      // if error returned, redirect to "page not found"
+      if (response.error) {
+        this.$router.replace('/*') 
+      }
+
+      this.tableData = response
       this.dataLoading = false;
       this.dataLoaded = true;
     },

@@ -14,9 +14,13 @@ transactionsRouter.get('/', async (req, res) => {
   // '/transactions' endpoint gets 10 most recent so no need to get txs 1 by 1
   if (!page || page == 1) {
     transactionsRaw = await fetchXi('/transactions');
+    
     if (transactionsRaw.error) {
-      res.status(400).send(transactionsRaw.error)
+      res.status(400).send(transactionsRaw);
+      return;
     } 
+
+    transactionsRaw = await getAllTxBlock(transactionsRaw, req.latestBlock); // add block height to transactions
   }
   // for subsequent pages, it is only possible to get blocks one by one using '/blocks/:height' endpoint
   if (page > 1) {
@@ -31,16 +35,14 @@ transactionsRouter.get('/', async (req, res) => {
       const block = await fetchXi('/blocks/' + latestBlock);
       block.transactions.forEach(tx => {
         if (skippedTxs >= skipTxs && transactionsRaw.length < 10) {
-          transactionsRaw.push(tx);
+          // add block height to transactions
+          transactionsRaw.push({...tx, block: block.height});
         } 
         skippedTxs++;
       })
       latestBlock--;
     }
   }
-
-  // add the block associated with each transaction
-  transactionsRaw = await getAllTxBlock(transactionsRaw, req.latestBlock);
 
   // clean data so readable by by Table componenet in Vue app
   const transactionsClean = cleanListOfData(transactionsRaw);
@@ -68,6 +70,7 @@ transactionsRouter.get('/:hash', async (req, res) => {
     res.status(400).send('transaction not found')
   }
 
+  // set the block property of the transaction
   transactionRaw.block = latestBlock;
 
   // clean data so readable by by Table componenet in Vue app

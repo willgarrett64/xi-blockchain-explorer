@@ -11,7 +11,7 @@ walletsRouter.get('/', async (req, res) => {
 
   const walletsRaw = await fetchXi('/wallets');
   if (walletsRaw.error) {
-    res.status(400).send(walletsRaw.error)
+    res.status(400).send(walletsRaw)
   } 
   
   // clean data so readable by by Table componenet in Vue app, and limit to 10
