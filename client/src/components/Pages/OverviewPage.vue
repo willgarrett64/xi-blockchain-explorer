@@ -127,13 +127,12 @@ export default {
   display: grid;
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 100%;
-  row-gap: 20px;
+  row-gap: 30px;
 }
 
 .overview-page .page-title {
   text-align: left;
   grid-row: 1;
-  margin-bottom: 10px;
 }
 
 .overview-page .page-title .subtitle {
