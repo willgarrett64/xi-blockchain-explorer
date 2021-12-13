@@ -70,7 +70,9 @@ export default {
       const txPromise = fetchData('/transactions', this.signal);
       const [blocks, transactions] = await Promise.all([blockPromise, txPromise])
 
-      
+      if (blocks.error || transactions.error) {
+        this.$router.replace('/*') ;
+      }
 
       this.blocks = blocks;
       this.transactions = transactions;
