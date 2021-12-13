@@ -17,12 +17,7 @@
         :type="'vertical'"
       />
     </div>
-    <div class="summary" v-if="dataLoaded">
-      <h3 class="section-header">{{ title }} Summary</h3>
-      <div class="summary-box">
-        <p>Eventually there will be a nicely written summary here! It will contain all sorts of wonderful information, all of which is already contained in the table above.</p>
-      </div>
-    </div>
+    <Summary v-if="dataLoaded" :title="title" :item="overviewData" />
     
     <div class="transactions-table" v-if="overviewData.transactions && dataLoaded">
       <TableWrapper
@@ -40,6 +35,7 @@
 
 <script>
 import TableWrapper from "../Table/TableWrapper.vue";
+import Summary from "../Summary/Summary.vue";
 import Loader from "../Loader/Loader.vue"
 import {fetchData} from "../../utils/fetchData.js";
 
@@ -117,7 +113,8 @@ export default {
   },
   components: {
     TableWrapper,
-    Loader
+    Loader,
+    Summary
   },
 }
 </script>
@@ -158,27 +155,6 @@ export default {
 .clipboard-icon:hover {
   fill: var(--xi-orange);
   cursor: pointer;
-}
-
-
-.summary {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  align-self: stretch;
-}
-
-.summary-box {
-  flex-grow: 1;
-}
-
-.summary-box {
-  background-color: white;
-  box-sizing: border-box;
-  padding: 10px;
-  width: 100%;
-  min-height: 100px;
-  border-radius: 8px;
 }
 
 @media screen and (min-width: 750px) {

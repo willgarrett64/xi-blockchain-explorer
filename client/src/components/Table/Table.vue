@@ -26,9 +26,9 @@
     <tbody>
       <TableRowVertical
         v-for="header in tableHeaders"
-        :key="header.key"
-        :data="tableData[header].data"
-        :to="tableData[header].to"
+        :key="tableData[header.key].data.toString()"
+        :data="tableData[header.key].data"
+        :to="tableData[header.key].to"
         :header="header"
       />
     </tbody>
@@ -70,7 +70,6 @@ export default {
         default:
           break;
       }
-      console.log(name);
       return {key: header, name: name ? name : header}
     }
   },

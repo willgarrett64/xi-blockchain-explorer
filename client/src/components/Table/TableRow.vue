@@ -2,7 +2,7 @@
   <tr>
     <TableData 
       v-for="header in headers"
-      :key="header"
+      :key="header.key"
       :data="item[header.key].data"
       :to="item[header.key].to"
       :header="header"
