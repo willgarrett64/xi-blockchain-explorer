@@ -14,17 +14,4 @@ app.use('/api', getLatestBlock, apiRouter);
 
 
 
-//TEST
-// app.get('/blocks/latest', getLatestBlock, async (req, res) => {
-//   const data = await fetchXi('/blocks/latest');
-  
-//   if (data.error) {
-//     res.status(400).send(data.error);
-//   } 
-
-//   res.status(200).send(data);
-// })
-
-
-
-app.listen(PORT, () => console.log((`Countdown app server is listening at port ${PORT}`)));
+app.listen(PORT, () => console.log((`XI Blockchain Explorer server is listening at port ${PORT}`)));
