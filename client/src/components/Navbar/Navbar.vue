@@ -70,6 +70,8 @@ export default {
 
 <style>
 .navbar {
+  font-family: 'Saira Condensed', sans-serif;
+  font-size: 1.2rem;
   position: fixed;
   z-index: 30;
   background-color: var(--xi-blue);

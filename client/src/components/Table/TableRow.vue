@@ -3,8 +3,8 @@
     <TableData 
       v-for="header in headers"
       :key="header"
-      :data="item[header].data"
-      :to="item[header].to"
+      :data="item[header.key].data"
+      :to="item[header.key].to"
       :header="header"
     />
   </tr>

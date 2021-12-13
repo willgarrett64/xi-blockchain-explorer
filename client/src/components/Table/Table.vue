@@ -4,10 +4,10 @@
     <thead>
       <tr>
         <th 
-          v-for="header in headers"
-          :key="header"
+          v-for="header in tableHeaders"
+          :key="header.key"
         >
-          {{header}}
+          {{ (header.name).toUpperCase() }}
         </th>
       </tr>
     </thead>
@@ -16,7 +16,7 @@
         v-for="item in tableData"
         :key="item.key"
         :item="item"
-        :headers="headers"
+        :headers="tableHeaders"
       />
     </tbody>
   </table>
@@ -25,8 +25,8 @@
   <table v-else-if="type === 'vertical'" class="vertical-table">
     <tbody>
       <TableRowVertical
-        v-for="header in headers"
-        :key="header"
+        v-for="header in tableHeaders"
+        :key="header.key"
         :data="tableData[header].data"
         :to="tableData[header].to"
         :header="header"
@@ -42,14 +42,37 @@ import TableRowVertical from './TableRowVertical.vue';
 export default {
   name: "Table",
   props: ['headers', 'tableData', 'type'],
-  data() {
-    return {
-      
+  computed: {
+    tableHeaders() {
+      return this.headers.map(header => this.getHeader(header))
     }
   },
   components: {
     TableRow,
     TableRowVertical
+  },
+  methods: {
+    getHeader(header) {
+      let name = null;
+      switch (header) {
+        case 'totalTxs':
+          name = 'no. txs'
+          break;
+        case 'ledgerHash':
+          name = 'ledger hash'
+          break;
+        case 'parentHash':
+          name = 'parent hash'
+          break;
+        case 'when':
+          name = 'mined'
+          break;
+        default:
+          break;
+      }
+      console.log(name);
+      return {key: header, name: name ? name : header}
+    }
   },
 }
 </script>
@@ -79,6 +102,7 @@ th, td {
 
 th {
   background-color: var(--xi-blue);
+  font-family: 'Saira Condensed', sans-serif;
   color: white;
 }
 
@@ -161,6 +185,8 @@ tr:hover {
 		white-space: nowrap;
     content: attr(data-label);
     font-weight: bold;
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 0.9rem;
 	}
 
 }  

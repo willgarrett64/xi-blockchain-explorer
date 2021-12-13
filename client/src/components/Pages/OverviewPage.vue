@@ -27,7 +27,7 @@
     <div class="transactions-table" v-if="overviewData.transactions && dataLoaded">
       <TableWrapper
         :tableData="overviewData.transactions"
-        :headers="['date', 'time', 'block', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
+        :headers="['block', 'date', 'time', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
         :tableHeader="title + ' Transactions'"
         :type="'horizontal'"
         :page="page ? page : 1"

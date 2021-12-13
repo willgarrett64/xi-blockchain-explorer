@@ -28,7 +28,6 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Saira+Condensed:wght@300;400;600&display=swap');
 
 #app {
-  font-family: 'Red Hat Text', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -44,6 +43,7 @@ html {
   width: 100vw;
   background-color: rgb(216, 224, 238);
   overflow-x: hidden;
+  font-family: 'Red Hat Text', Helvetica, Arial, sans-serif;
 }
 
 :root {
@@ -73,6 +73,8 @@ main {
 }
 
 .section-header {
+  font-family: 'Saira Condensed', sans-serif;
+  font-size: 1.6rem;
   text-align: left;
   margin-bottom: 10px;
 }
