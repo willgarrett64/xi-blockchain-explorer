@@ -120,3 +120,10 @@ The main issue revolves around the size of the main header, searchbar and loadin
 ### Error handling
 
 Currently there is a lack of proper error handling when it comes to fetching the data from the backend. Some basic error hadnling has been implemented, however as it stands if a fetch request is unsuccessful the loading spinner will keep going indefinitely rather than warning the user.
+
+
+### Page numbers
+
+I was unable to think of an efficient way to get the max page number for transactions (be that for all transactions or for the tx list in wallets). I believe I would have to acquire all the data (iterate over every block) and then count them to work out how many pages.
+
+Whilst it is possible to know the max number for blocks, block transactions and wallets, as some pages don't have this information I decided to leave the max page number out completely.
