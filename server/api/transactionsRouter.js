@@ -32,11 +32,11 @@ transactionsRouter.get('/', async (req, res) => {
     let skippedTxs = 0; // count how many txs have been skipped
     
     while (transactionsRaw.length < 10 && latestBlock > 0) {
-      const blockTxs = await fetchXi('/blocks/' + latestBlock + '/transactions');
-      blockTxs.forEach(tx => {
+      const block = await fetchXi('/blocks/' + latestBlock);
+      block.transactions.forEach(tx => {
         if (skippedTxs >= skipTxs && transactionsRaw.length < 10) {
           // add block height to transactions
-          transactionsRaw.push({...tx, block: latestBlock});
+          transactionsRaw.push({...tx, block: block.height});
         } 
         skippedTxs++;
       })
@@ -61,17 +61,17 @@ transactionsRouter.get('/:hash', async (req, res) => {
   // The search begins from the more recent block for performance purposes - the assumption being that it's more likely the user is searching something recent 
   let transactionRaw = null;
   while (!transactionRaw && latestBlock > 0) {
-    const blockTxs = await fetchXi('/blocks/' + latestBlock + '/transactions');
-    transactionRaw = blockTxs.find(tx => txHash === tx.hash);
-
-    // set the block property of the transaction
-    transactionRaw.block = latestBlock;
+    const block = await fetchXi('/blocks/' + latestBlock);
+    transactionRaw = block.transactions.find(tx => txHash === tx.hash)
     latestBlock--;
   }
 
   if (!transactionRaw) {
     res.status(400).send('transaction not found')
   }
+
+  // set the block property of the transaction
+  transactionRaw.block = latestBlock;
 
   // clean data so readable by by Table componenet in Vue app
   const transactionClean = cleanData(transactionRaw);
