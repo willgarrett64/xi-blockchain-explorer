@@ -62,6 +62,7 @@ header {
 main {
   box-sizing: border-box;
   padding: 14vh 5vw;
+  padding-bottom: 4vh;
   overflow: hidden;
   max-width: 1400px;
   margin: 0 auto;

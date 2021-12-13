@@ -7,7 +7,7 @@ import OverviewPage from "./components/Pages/OverviewPage.vue";
 import PageNotFound from "./components/Pages/PageNotFound.vue";
 
 // headers for different tables
-const blockHeaders = ['height', 'date', 'time', 'hash', 'ledgerHash', 'miner', 'totalTxs'];
+const blockHeaders = ['height', 'date', 'time', 'hash', 'parentHash','ledgerHash', 'miner', 'totalTxs'];
 const txHeaders = ['hash', 'date', 'time', 'block', 'from', 'to', 'amount', 'fee', 'memo'];
 const walletHeaders = ['address', 'balance', 'nonce'];
 

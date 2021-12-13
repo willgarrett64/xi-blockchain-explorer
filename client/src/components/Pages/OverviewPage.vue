@@ -4,8 +4,7 @@
       <h2>{{ title }}</h2>
       <div class="subtitle">
         <h3>{{ subtitle }}:  <span class="id">{{ id }}</span></h3>
-        <svg v-on:click="copyToClipboard" class="clipboard-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512"><g><g><path d="m425.5,85.5h-61.9c-1.8-13.9-3.1-24.2-3.1-24.2-1.3-10.2-10-17.9-20.4-17.9h-63.5v-12c0-11.3-9.2-20.4-20.5-20.4-11.3,0-20.5,9.1-20.5,20.4v12h-63.6c-10.4,0-19.1,7.7-20.4,17.9l-3,24.2h-62c-11.3,0-20.5,9.1-20.5,20.4v374.6c0,11.3 9.2,20.4 20.5,20.4h338.9c11.3,0 20.5-9.1 20.5-20.4v-374.6c0.1-11.2-9.1-20.4-20.5-20.4zm-235.4-1.2h131.9l6.7,53.2h-145.3l6.7-53.2zm214.9,375.9h-297.8v-333.8h36.3l-3.6,29c-0.7,5.8 0,22.9 20.4,22.9h191.7c0.1,0 0.1,0 0.2,0 11.4,0 20.5-9.1 20.5-20.4 0-0.7-1.7-14.5-3.9-31.5h36.2v333.8z"/></g></g>
-        </svg>
+        <Clipboard v-on:copy="copyToClipboard" />
       </div>
     </div>
     <div class="overview-table">
@@ -22,7 +21,7 @@
     <div class="transactions-table" v-if="overviewData.transactions && dataLoaded">
       <TableWrapper
         :tableData="overviewData.transactions"
-        :headers="['block', 'date', 'time', 'hash', 'from', 'to', 'amount', 'fee', 'memo']"
+        :headers="['hash', 'date', 'time', 'block', 'from', 'to', 'amount', 'fee', 'memo']"
         :tableHeader="title + ' Transactions'"
         :type="'horizontal'"
         :page="page ? page : 1"
@@ -36,6 +35,7 @@
 <script>
 import TableWrapper from "../Table/TableWrapper.vue";
 import Summary from "../Summary/Summary.vue";
+import Clipboard from "../Clipboard/Clipboard.vue";
 import Loader from "../Loader/Loader.vue"
 import {fetchData} from "../../utils/fetchData.js";
 
@@ -114,7 +114,8 @@ export default {
   components: {
     TableWrapper,
     Loader,
-    Summary
+    Summary,
+    Clipboard
   },
 }
 </script>
@@ -147,6 +148,7 @@ export default {
 }
 
 .clipboard-icon {
+  position: relative;
   height: 1rem;
   padding: 3px;
   border-radius: 5px;

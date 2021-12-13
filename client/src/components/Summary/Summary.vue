@@ -17,7 +17,9 @@
         <p v-else-if="title === 'Wallet'">
           This wallet, with the address {{ item.address.data }}, has a balance of {{ item.balance.data }} and a nonce of {{ item.nonce.data }}.
           <br><br>
-          There are {{ item.totalTxs.data }} transactions linked to the wallet.
+          <!-- CURRENTLY NOT POSSIBLE WITHOUT TOTAL TXS DATA
+            There are {{ item.totalTxs.data }} transactions linked to the wallet. 
+          -->
         </p>
       </div>
     </div>
@@ -33,10 +35,10 @@ export default {
     totalValue() {
       if (this.item.transactions) {
         let total = 0;
-        this.item.transactions.forEach(tx => {
-          total += parseInt(tx.amount.data)
+        this.item.txAll.forEach(tx => {
+          total += parseFloat(tx.amount.data)
         })
-        return total;
+        return total.toFixed(5);
       } 
       return null
     },

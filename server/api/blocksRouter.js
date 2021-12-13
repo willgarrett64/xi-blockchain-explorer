@@ -72,8 +72,9 @@ blocksRouter.get('/:height', async (req, res) => {
 
   // clean data so readable by by Table componenet in Vue app
   const blockClean = cleanData(blockRaw);
-  const transactionsClean = cleanListOfData(transactionsRaw.slice(firstTx, firstTx + 10));
-  blockClean.transactions = transactionsClean;
+  const transactionsClean = cleanListOfData(transactionsRaw);
+  blockClean.transactions = transactionsClean.slice(firstTx, firstTx + 10);
+  blockClean.txAll = transactionsClean // CURRENT WORKAROUND GETTING SUMMARY DATA
 
   res.send(blockClean)
 })

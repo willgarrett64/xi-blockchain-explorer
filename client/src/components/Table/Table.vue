@@ -161,7 +161,6 @@ tr:hover {
   }
 	
 	.horizontal-table td { 
-		/* Behave  like a "row" */
 		position: relative;
 		border-bottom: 1px solid var(--xi-orange); 
     padding: 8px 10px;
@@ -176,9 +175,7 @@ tr:hover {
   }
 
 	.horizontal-table td:before { 
-		/* Now like a table header */
 		position: absolute;
-		/* Top/left values mimic padding */
 		top: 8px;
 		left: 10px;
 		white-space: nowrap;
@@ -205,7 +202,6 @@ tr:hover {
   width: 100%;
   min-width: 50px;
   max-width: 100px;
-  overflow: hidden;
 }
 
 /*#endregion Vertical table styles*/
