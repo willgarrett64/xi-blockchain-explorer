@@ -25,6 +25,7 @@ export default {
       tableData: [],
       dataLoading: false,
       dataLoaded: false,
+      polling: null,
       controller: new AbortController(),
     }
   },
@@ -38,35 +39,49 @@ export default {
     }
   },
   created() {
-    this.getData(this.fullEndpoint)
+    this.setInitialData();
+    this.pollData();
   },
-  unmounted() {
-    this.controller.abort(); // abort any requests on unmount
+  beforeDestroy() {
+    // abort any requests and stop polling when changing page
+    clearInterval(this.polling);
+    this.controller.abort(); 
   },
   watch: {
-    // update data if the route changes
+    // update data if changing list all view (i.e. blocks -> wallets)
     $route(to, from) {
       if (to !== from) {
-        this.controller.abort(); // if changing to new list all (i.e. blocks -> wallets) abort any previous requests
+        // abort any requests and stop polling, and set new controller
+        clearInterval(this.polling)
+        this.controller.abort();
         this.controller = new AbortController(); // create new controller
+        
         this.dataLoaded = false;
-        this.getData(this.fullEndpoint); // make new request
+        this.setInitialData();
+        this.pollData()
       }
     }
   },
   methods: {
-    async getData(endpoint) {
-      this.dataLoading = true;
-      const response = await fetchData(endpoint, this.signal);
-
+    // reacquire data every minute
+    async pollData() {
+      this.polling = setInterval(() => {
+        this.getData();
+      }, 60000)
+    },
+    async getData() {
+      const response = await fetchData(this.fullEndpoint, this.signal);
       // if error returned, redirect to "page not found"
       if (response.error) {
-        this.$router.replace('/*') 
+        this.$router.replace('/*') ;
       }
-
       this.tableData = response
-      this.dataLoading = false;
-      this.dataLoaded = true;
+    },
+    async setInitialData () {
+      this.dataLoading = true; //turn on loading spinner
+      await this.getData(); // acquire data
+      this.dataLoading = false; //turn off loading spinner
+      this.dataLoaded = true; 
     },
   },
   components: {

@@ -8,7 +8,7 @@
           :tableHeader="'Recent Blocks'"
           :type="'horizontal'"
         />
-        <router-link to="/blocks" class="view-all-button">View all blocks</router-link>
+        <router-link to="/blocks" class="view-all-button">View all blocks →</router-link>
       </div>
       <div class="recent-transactions" v-if="this.loaded">
         <TableWrapper
@@ -16,7 +16,7 @@
           :tableHeader="'Recent Transactions'"
           :type="'horizontal'"
         />
-        <router-link to="/transactions" class="view-all-button">View all transactions</router-link>
+        <router-link to="/transactions" class="view-all-button">View all transactions →</router-link>
       </div>
     </div>
     <Loader v-if="loading"/>
@@ -36,6 +36,7 @@ export default {
       loading: false,
       blocks: [],
       transactions: [],
+      polling: null,
       controller: new AbortController(),
     }
   },
@@ -44,25 +45,32 @@ export default {
       return this.controller.signal
     }
   },
-  async mounted() {
+  async created() {
     this.loading = true;
-    const blockPromise = this.getData('/blocks');
-    const txPromise = this.getData('/transactions');
-
-    const [blocks, transactions] = await Promise.all([blockPromise, txPromise])
-
-    this.blocks = blocks;
-    this.transactions = transactions;
+    await this.getData();
     this.loading = false;
     this.loaded = true;
+    this.pollData()
   },
-  unmounted() {
+  beforeDestroy () {
+    // abort any requests and stop polling when changing page
     this.controller.abort(); // abort any requests on unmount
+    clearInterval(this.polling)
   },
   methods: {
-    async getData(endpoint) {
-      const data = await fetchData(endpoint, this.signal);
-      return data;
+    // reacquire data every minute
+    async pollData() {
+      this.polling = setInterval(() => {
+        this.getData();
+      }, 60000)
+    },
+    // acquire blocks and transactions data
+    async getData() {
+      const blockPromise = fetchData('/blocks', this.signal);
+      const txPromise = fetchData('/transactions', this.signal);
+      const [blocks, transactions] = await Promise.all([blockPromise, txPromise])
+      this.blocks = blocks;
+      this.transactions = transactions;
     },
   },
   components: {
