@@ -69,7 +69,7 @@ main {
 }
 
 .page-header {
-  font-size: 2rem;
+  font-size: 1.2rem;
   margin-bottom: 20px;
 }
 
