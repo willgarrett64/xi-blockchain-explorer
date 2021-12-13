@@ -31,8 +31,8 @@ const getWalletTxs = async (address, latestBlock, pageNo = 1) => {
 
   // keep searching for transactions until 10 are found for page or there are no more blocks to search 
   while (transactions.length < 10 && searchBlock > 0) {
-    const block = await fetchXi('/blocks/' + searchBlock);
-    block.transactions.forEach(tx => {
+    const blockTxs = await fetchXi('/blocks/' + searchBlock + '/transactions');
+    blockTxs.forEach(tx => {
       if (tx.for === address || tx.to === address) {
         if (skippedTxs > skipTxs) {
           tx.block = searchBlock; // add block height to tx data

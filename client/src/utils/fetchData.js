@@ -1,7 +1,9 @@
 const fetchData = async (endpoint, signal) => {
   const baseUrl = "./api";
   const response = await fetch(baseUrl + endpoint, {signal});
-  if (response) {
+  if (response.status === 400 || !response) {
+    return {error: 'fetch failed'}
+  } else if (response) {
     const data = await response.json();
     return data;
   } else {

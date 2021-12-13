@@ -69,6 +69,9 @@ export default {
       const blockPromise = fetchData('/blocks', this.signal);
       const txPromise = fetchData('/transactions', this.signal);
       const [blocks, transactions] = await Promise.all([blockPromise, txPromise])
+
+      
+
       this.blocks = blocks;
       this.transactions = transactions;
     },
